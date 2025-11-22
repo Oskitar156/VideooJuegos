@@ -63,9 +63,10 @@ namespace VideooJuegos.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Gemini_Generated_Image_qj5c9xqj5c9xqj5c {
+        internal static System.Drawing.Bitmap Back_to_School_Educational_Presentation_in_Blue__Red__and_Green_Retro_Pixel_Art_Video_Game_Style__2_ {
             get {
-                object obj = ResourceManager.GetObject("Gemini_Generated_Image_qj5c9xqj5c9xqj5c", resourceCulture);
+                object obj = ResourceManager.GetObject("Back to School Educational Presentation in Blue, Red, and Green Retro Pixel Art V" +
+                        "ideo Game Style (2)", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -73,9 +74,10 @@ namespace VideooJuegos.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Gemini_Generated_Image_x796g4x796g4x796 {
+        internal static System.Drawing.Bitmap Back_to_School_Educational_Presentation_in_Blue__Red__and_Green_Retro_Pixel_Art_Video_Game_Style__5_ {
             get {
-                object obj = ResourceManager.GetObject("Gemini_Generated_Image_x796g4x796g4x796", resourceCulture);
+                object obj = ResourceManager.GetObject("Back to School Educational Presentation in Blue, Red, and Green Retro Pixel Art V" +
+                        "ideo Game Style (5)", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -83,9 +85,10 @@ namespace VideooJuegos.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Gemini_Generated_Image_x796g4x796g4x7961 {
+        internal static System.Drawing.Bitmap Back_to_School_Educational_Presentation_in_Blue__Red__and_Green_Retro_Pixel_Art_Video_Game_Style__6_ {
             get {
-                object obj = ResourceManager.GetObject("Gemini_Generated_Image_x796g4x796g4x7961", resourceCulture);
+                object obj = ResourceManager.GetObject("Back to School Educational Presentation in Blue, Red, and Green Retro Pixel Art V" +
+                        "ideo Game Style (6)", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -93,9 +96,31 @@ namespace VideooJuegos.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Gemini_Generated_Image_x796g4x796g4x7962 {
+        internal static System.Drawing.Bitmap Back_to_School_Educational_Presentation_in_Blue__Red__and_Green_Retro_Pixel_Art_Video_Game_Style__8_ {
             get {
-                object obj = ResourceManager.GetObject("Gemini_Generated_Image_x796g4x796g4x7962", resourceCulture);
+                object obj = ResourceManager.GetObject("Back to School Educational Presentation in Blue, Red, and Green Retro Pixel Art V" +
+                        "ideo Game Style (8)", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Back_to_School_Educational_Presentation_in_Blue__Red__and_Green_Retro_Pixel_Art_Video_Game_Style__9_ {
+            get {
+                object obj = ResourceManager.GetObject("Back to School Educational Presentation in Blue, Red, and Green Retro Pixel Art V" +
+                        "ideo Game Style (9)", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Purple_Blue_Pixel_Welcome_To_My_Channel_Video {
+            get {
+                object obj = ResourceManager.GetObject("Purple Blue Pixel Welcome To My Channel Video", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
