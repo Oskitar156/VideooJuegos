@@ -119,6 +119,7 @@
     <Compile Include="CardVideoJuegos.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="Favorito.cs" />
     <Compile Include="IgdbTokenManager.cs" />
     <Compile Include="Interfaz.cs">
       <SubType>Form</SubType>

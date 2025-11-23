@@ -36,6 +36,7 @@
             this.tIENDAToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.btnAnterior = new System.Windows.Forms.Button();
             this.btnSiguiente = new System.Windows.Forms.Button();
+            this.flowLayoutFavoritos = new System.Windows.Forms.FlowLayoutPanel();
             this.flowLayoutPanelCatalogo.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -46,7 +47,7 @@
             this.flowLayoutPanelCatalogo.Controls.Add(this.flowLayoutPanelTienda);
             this.flowLayoutPanelCatalogo.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flowLayoutPanelCatalogo.Location = new System.Drawing.Point(0, 39);
-            this.flowLayoutPanelCatalogo.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.flowLayoutPanelCatalogo.Margin = new System.Windows.Forms.Padding(4);
             this.flowLayoutPanelCatalogo.Name = "flowLayoutPanelCatalogo";
             this.flowLayoutPanelCatalogo.Size = new System.Drawing.Size(1348, 556);
             this.flowLayoutPanelCatalogo.TabIndex = 1;
@@ -55,7 +56,7 @@
             // 
             this.flowLayoutPanelTienda.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flowLayoutPanelTienda.Location = new System.Drawing.Point(4, 4);
-            this.flowLayoutPanelTienda.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.flowLayoutPanelTienda.Margin = new System.Windows.Forms.Padding(4);
             this.flowLayoutPanelTienda.Name = "flowLayoutPanelTienda";
             this.flowLayoutPanelTienda.Size = new System.Drawing.Size(267, 0);
             this.flowLayoutPanelTienda.TabIndex = 0;
@@ -97,7 +98,7 @@
             // 
             this.btnAnterior.Font = new System.Drawing.Font("Cooper Black", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnAnterior.Location = new System.Drawing.Point(528, 0);
-            this.btnAnterior.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnAnterior.Margin = new System.Windows.Forms.Padding(4);
             this.btnAnterior.Name = "btnAnterior";
             this.btnAnterior.Size = new System.Drawing.Size(75, 39);
             this.btnAnterior.TabIndex = 3;
@@ -109,13 +110,21 @@
             // 
             this.btnSiguiente.Font = new System.Drawing.Font("Cooper Black", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnSiguiente.Location = new System.Drawing.Point(627, 0);
-            this.btnSiguiente.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnSiguiente.Margin = new System.Windows.Forms.Padding(4);
             this.btnSiguiente.Name = "btnSiguiente";
             this.btnSiguiente.Size = new System.Drawing.Size(75, 39);
             this.btnSiguiente.TabIndex = 3;
             this.btnSiguiente.Text = "▶";
             this.btnSiguiente.UseVisualStyleBackColor = true;
             this.btnSiguiente.Click += new System.EventHandler(this.btnSiguiente_Click);
+            // 
+            // flowLayoutFavoritos
+            // 
+            this.flowLayoutFavoritos.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.flowLayoutFavoritos.Location = new System.Drawing.Point(0, 39);
+            this.flowLayoutFavoritos.Name = "flowLayoutFavoritos";
+            this.flowLayoutFavoritos.Size = new System.Drawing.Size(1348, 556);
+            this.flowLayoutFavoritos.TabIndex = 4;
             // 
             // Interfaz
             // 
@@ -124,6 +133,7 @@
             this.BackColor = System.Drawing.Color.Black;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(1348, 595);
+            this.Controls.Add(this.flowLayoutFavoritos);
             this.Controls.Add(this.btnSiguiente);
             this.Controls.Add(this.btnAnterior);
             this.Controls.Add(this.flowLayoutPanelCatalogo);
@@ -131,7 +141,7 @@
             this.ForeColor = System.Drawing.SystemColors.ControlText;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "Interfaz";
             this.Text = "Inicio";
             this.Load += new System.EventHandler(this.Interfaz_Load);
@@ -151,5 +161,6 @@
         private System.Windows.Forms.ToolStripMenuItem tIENDAToolStripMenuItem;
         private System.Windows.Forms.Button btnAnterior;
         private System.Windows.Forms.Button btnSiguiente;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutFavoritos;
     }
 }
