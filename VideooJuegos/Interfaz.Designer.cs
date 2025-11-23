@@ -37,6 +37,9 @@
             this.btnAnterior = new System.Windows.Forms.Button();
             this.btnSiguiente = new System.Windows.Forms.Button();
             this.flowLayoutFavoritos = new System.Windows.Forms.FlowLayoutPanel();
+            this.comboFiltro = new System.Windows.Forms.ComboBox();
+            this.txtBuscar = new System.Windows.Forms.TextBox();
+            this.btnBuscar = new System.Windows.Forms.Button();
             this.flowLayoutPanelCatalogo.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -125,6 +128,36 @@
             this.flowLayoutFavoritos.Name = "flowLayoutFavoritos";
             this.flowLayoutFavoritos.Size = new System.Drawing.Size(1348, 556);
             this.flowLayoutFavoritos.TabIndex = 4;
+            // comboFiltro
+            // 
+            this.comboFiltro.BackColor = System.Drawing.Color.Black;
+            this.comboFiltro.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.comboFiltro.Font = new System.Drawing.Font("Cooper Black", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.comboFiltro.ForeColor = System.Drawing.Color.White;
+            this.comboFiltro.FormattingEnabled = true;
+            this.comboFiltro.Location = new System.Drawing.Point(1194, 12);
+            this.comboFiltro.Name = "comboFiltro";
+            this.comboFiltro.Size = new System.Drawing.Size(121, 23);
+            this.comboFiltro.TabIndex = 4;
+            // 
+            // txtBuscar
+            // 
+            this.txtBuscar.BackColor = System.Drawing.SystemColors.InactiveCaptionText;
+            this.txtBuscar.Font = new System.Drawing.Font("Cooper Black", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtBuscar.ForeColor = System.Drawing.Color.White;
+            this.txtBuscar.Location = new System.Drawing.Point(779, 12);
+            this.txtBuscar.Name = "txtBuscar";
+            this.txtBuscar.Size = new System.Drawing.Size(338, 22);
+            this.txtBuscar.TabIndex = 5;
+            // 
+            // btnBuscar
+            // 
+            this.btnBuscar.Location = new System.Drawing.Point(1078, 11);
+            this.btnBuscar.Name = "btnBuscar";
+            this.btnBuscar.Size = new System.Drawing.Size(75, 24);
+            this.btnBuscar.TabIndex = 6;
+            this.btnBuscar.Text = "Buscar";
+            this.btnBuscar.UseVisualStyleBackColor = true;
             // 
             // Interfaz
             // 
@@ -134,6 +167,9 @@
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(1348, 595);
             this.Controls.Add(this.flowLayoutFavoritos);
+            this.Controls.Add(this.btnBuscar);
+            this.Controls.Add(this.txtBuscar);
+            this.Controls.Add(this.comboFiltro);
             this.Controls.Add(this.btnSiguiente);
             this.Controls.Add(this.btnAnterior);
             this.Controls.Add(this.flowLayoutPanelCatalogo);
@@ -162,5 +198,8 @@
         private System.Windows.Forms.Button btnAnterior;
         private System.Windows.Forms.Button btnSiguiente;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutFavoritos;
+        private System.Windows.Forms.ComboBox comboFiltro;
+        private System.Windows.Forms.TextBox txtBuscar;
+        private System.Windows.Forms.Button btnBuscar;
     }
 }
