@@ -44,7 +44,7 @@
             this.label1.BackColor = System.Drawing.Color.Transparent;
             this.label1.Font = new System.Drawing.Font("Cooper Black", 19.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.label1.Location = new System.Drawing.Point(231, 79);
+            this.label1.Location = new System.Drawing.Point(251, 102);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(135, 38);
             this.label1.TabIndex = 0;
@@ -52,7 +52,7 @@
             // 
             // txtCorreoLogin
             // 
-            this.txtCorreoLogin.Location = new System.Drawing.Point(238, 120);
+            this.txtCorreoLogin.Location = new System.Drawing.Point(258, 143);
             this.txtCorreoLogin.Name = "txtCorreoLogin";
             this.txtCorreoLogin.Size = new System.Drawing.Size(172, 22);
             this.txtCorreoLogin.TabIndex = 1;
@@ -63,7 +63,7 @@
             this.label2.BackColor = System.Drawing.Color.Transparent;
             this.label2.Font = new System.Drawing.Font("Cooper Black", 19.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.label2.Location = new System.Drawing.Point(231, 164);
+            this.label2.Location = new System.Drawing.Point(251, 187);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(210, 38);
             this.label2.TabIndex = 2;
@@ -71,7 +71,7 @@
             // 
             // txtContraseñaLogin
             // 
-            this.txtContraseñaLogin.Location = new System.Drawing.Point(238, 214);
+            this.txtContraseñaLogin.Location = new System.Drawing.Point(258, 237);
             this.txtContraseñaLogin.Name = "txtContraseñaLogin";
             this.txtContraseñaLogin.Size = new System.Drawing.Size(172, 22);
             this.txtContraseñaLogin.TabIndex = 3;
@@ -86,7 +86,7 @@
             this.buttonLogin.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonLogin.Font = new System.Drawing.Font("Cooper Black", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.buttonLogin.ForeColor = System.Drawing.Color.Transparent;
-            this.buttonLogin.Location = new System.Drawing.Point(344, 288);
+            this.buttonLogin.Location = new System.Drawing.Point(236, 312);
             this.buttonLogin.Name = "buttonLogin";
             this.buttonLogin.Size = new System.Drawing.Size(108, 51);
             this.buttonLogin.TabIndex = 4;
@@ -104,10 +104,10 @@
             this.buttonRegistrar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonRegistrar.Font = new System.Drawing.Font("Cooper Black", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.buttonRegistrar.ForeColor = System.Drawing.Color.Transparent;
-            this.buttonRegistrar.Location = new System.Drawing.Point(238, 288);
+            this.buttonRegistrar.Location = new System.Drawing.Point(347, 312);
             this.buttonRegistrar.Margin = new System.Windows.Forms.Padding(0);
             this.buttonRegistrar.Name = "buttonRegistrar";
-            this.buttonRegistrar.Size = new System.Drawing.Size(103, 51);
+            this.buttonRegistrar.Size = new System.Drawing.Size(108, 51);
             this.buttonRegistrar.TabIndex = 5;
             this.buttonRegistrar.Text = "Registrate";
             this.buttonRegistrar.UseVisualStyleBackColor = false;
@@ -119,7 +119,7 @@
             this.label3.BackColor = System.Drawing.Color.Transparent;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label3.ForeColor = System.Drawing.Color.Black;
-            this.label3.Location = new System.Drawing.Point(235, 259);
+            this.label3.Location = new System.Drawing.Point(241, 278);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(217, 15);
             this.label3.TabIndex = 6;

@@ -252,6 +252,8 @@ namespace VideooJuegos
 
                 card.FavoritoAgregado += (s, e) => CargarFavoritosIGDB();
                 flowLayoutFavoritos.Controls.Add(card);
+            }
+        }
         private async void ComboFiltro_SelectedIndexChanged(object sender, EventArgs e)
         {
             await AplicarFiltroAsync();
