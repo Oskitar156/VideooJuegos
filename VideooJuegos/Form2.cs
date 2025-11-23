@@ -147,5 +147,10 @@ namespace VideooJuegos
             else
                 CrearUsuario();
         }
+
+        private void Registro_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

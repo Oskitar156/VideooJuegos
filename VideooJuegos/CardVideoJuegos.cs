@@ -126,7 +126,7 @@ namespace VideooJuegos
             this.Controls.Add(this.pictureBox1);
             this.DoubleBuffered = true;
             this.Name = "CardVideoJuegos";
-            this.Size = new System.Drawing.Size(260, 398);
+            this.Size = new System.Drawing.Size(275, 450);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
 
