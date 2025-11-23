@@ -118,6 +118,26 @@ namespace VideooJuegos.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap card {
+            get {
+                object obj = ResourceManager.GetObject("card", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap CardGif {
+            get {
+                object obj = ResourceManager.GetObject("CardGif", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Purple_Blue_Pixel_Welcome_To_My_Channel_Video {
             get {
                 object obj = ResourceManager.GetObject("Purple Blue Pixel Welcome To My Channel Video", resourceCulture);

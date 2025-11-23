@@ -127,6 +127,7 @@ namespace VideooJuegos
                 nuevo.Nombres = txtNombre.Text;
                 nuevo.Email = txtCorreo.Text;
                 nuevo.Password = txtContraseña.Text;
+                nuevo.Rol = "Usuario";
 
                 usuarios.Add(nuevo);
                 nuevo.SaveToJson(usuarios);
