@@ -121,7 +121,7 @@
             this.label3.ForeColor = System.Drawing.Color.Black;
             this.label3.Location = new System.Drawing.Point(235, 259);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(230, 16);
+            this.label3.Size = new System.Drawing.Size(217, 15);
             this.label3.TabIndex = 6;
             this.label3.Text = "¿Aun no tienes cuenta? crea una";
             // 
@@ -143,6 +143,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
             this.Text = "Inicio de sesión";
+            this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

@@ -25,6 +25,10 @@ namespace VideooJuegos
         public Interfaz()
         {
             InitializeComponent();
+
+            this.WindowState = FormWindowState.Maximized; //Pantalla completa
+            this.Bounds = Screen.PrimaryScreen.Bounds;
+
             menuStrip1.BackColor = Color.Black;
             menuStrip1.ForeColor = Color.White;
 
