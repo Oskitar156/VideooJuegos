@@ -25,6 +25,15 @@ namespace VideooJuegos
         public Interfaz()
         {
             InitializeComponent();
+            comboFiltro.Items.Add("Top Rating");
+            comboFiltro.Items.Add("Top Reviews");
+            comboFiltro.Items.Add("Más nuevos");
+            comboFiltro.Items.Add("A–Z");
+
+            comboFiltro.SelectedIndex = 0; // por defecto
+            comboFiltro.SelectedIndexChanged += ComboFiltro_SelectedIndexChanged;
+
+
 
             this.WindowState = FormWindowState.Maximized; //Pantalla completa
             this.Bounds = Screen.PrimaryScreen.Bounds;
@@ -34,6 +43,9 @@ namespace VideooJuegos
 
             menuStrip1.RenderMode = ToolStripRenderMode.Professional;
             menuStrip1.Renderer = new MyMenuRenderer();
+
+            btnBuscar.Click += BtnBuscar_Click;
+            txtBuscar.KeyDown += TxtBuscar_KeyDown;
 
             _ = InicializarInterfazAsync();
         }
@@ -199,6 +211,115 @@ namespace VideooJuegos
         {
             offset += limit;
             await CargarPagina();
+        }
+        private async void ComboFiltro_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            await AplicarFiltroAsync();
+        }
+        private async Task AplicarFiltroAsync()
+        {
+            if (manager == null)
+            {
+                string token = await IgdbTokenManager.GetTokenAsync(clientId, clientSecret);
+                manager = new IgdbManager(clientId, token);
+            }
+
+            string filtro = comboFiltro.SelectedItem.ToString();
+            string query = "";
+
+            switch (filtro)
+            {
+                case "Top Rating":
+                    query = @"
+                fields id,name,rating,first_release_date,genres.name,platforms.name,cover.url;
+                where rating != null;
+                sort rating desc;
+                limit 15;
+            ";
+                    break;
+
+                case "Top Reviews":
+                    query = @"
+                fields id,name,aggregated_rating,first_release_date,genres.name,platforms.name,cover.url;
+                where aggregated_rating != null;
+                sort aggregated_rating desc;
+                limit 15;
+            ";
+                    break;
+
+                case "Más nuevos":
+                    query = @"
+                fields id,name,first_release_date,rating,genres.name,platforms.name,cover.url;
+                where first_release_date != null;
+                sort first_release_date desc;
+                limit 15;
+            ";
+                    break;
+
+                case "A–Z":
+                    query = @"
+                fields id,name,rating,first_release_date,genres.name,platforms.name,cover.url;
+                sort name asc;
+                limit 15;
+            ";
+                    break;
+            }
+
+            List<IgdbGame> juegos = await manager.GetGamesAsync(query);
+            CargarJuegosEnCatalogo(juegos);
+        }
+        private async void BtnBuscar_Click(object sender, EventArgs e)
+        {
+            await BuscarJuegoAsync();
+        }
+
+        private async void TxtBuscar_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                e.Handled = true;
+                e.SuppressKeyPress = true;
+                await BuscarJuegoAsync();
+            }
+        }
+        private async Task BuscarJuegoAsync()
+        {
+            string texto = txtBuscar.Text.Trim();
+
+            if (string.IsNullOrWhiteSpace(texto))
+            {
+                MessageBox.Show("Ingresa un nombre para buscar.");
+                return;
+            }
+
+            if (manager == null)
+            {
+                string token = await IgdbTokenManager.GetTokenAsync(clientId, clientSecret);
+                manager = new IgdbManager(clientId, token);
+            }
+
+            string query = $@"
+        search ""{texto}"";
+        fields id,name,rating,genres.name,platforms.name,cover.url,first_release_date;
+        limit 20;
+    ";
+
+            try
+            {
+                List<IgdbGame> juegos = await manager.GetGamesAsync(query);
+
+                if (juegos.Count == 0)
+                {
+                    MessageBox.Show("No se encontraron juegos con ese nombre.");
+                    return;
+                }
+
+                CargarJuegosEnCatalogo(juegos);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al buscar: " + ex.Message);
+            }
         }
     }
 }
