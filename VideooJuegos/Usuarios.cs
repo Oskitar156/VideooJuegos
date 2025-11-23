@@ -14,6 +14,8 @@ namespace VideooJuegos
         public string Email { get; set; }
         public string Password { get; set; }
 
+        public string Rol { get; set; } = "Usuario";
+
         public void SaveToJson(List<Usuarios> usuarios)
         {
             string json = JsonConvert.SerializeObject(usuarios, Formatting.Indented);
