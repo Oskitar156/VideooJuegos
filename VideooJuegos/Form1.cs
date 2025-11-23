@@ -19,6 +19,7 @@ namespace VideooJuegos
             Administrador admin = new Administrador();
             admin.CrearAdministradoresPorDefecto();
 
+            txtContraseñaLogin.PasswordChar = '●';
             // Cargar usuarios del JSON
             usuarios = usuario.ReadDataFromJson();
         }
