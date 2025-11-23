@@ -13,7 +13,10 @@ namespace VideooJuegos
         private Label label2;
         private Label label3;
         private Label label4;
+        private Button btnCard;
         private Label label1;
+        public event EventHandler FavoritoAgregado;
+        private Favorito gestorFavoritos = Favorito.CargarFavoritos();
 
         public CardVideoJuegos()
         {
@@ -49,6 +52,9 @@ namespace VideooJuegos
             get { return pictureBox1.ImageLocation; }
             set { pictureBox1.ImageLocation = value; }
         }
+
+        public long Id { get; set; }
+
         private void InitializeComponent()
         {
             this.label1 = new System.Windows.Forms.Label();
@@ -56,6 +62,7 @@ namespace VideooJuegos
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.btnCard = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -64,7 +71,7 @@ namespace VideooJuegos
             this.label1.BackColor = System.Drawing.Color.Transparent;
             this.label1.Font = new System.Drawing.Font("Cooper Black", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.SystemColors.ControlLight;
-            this.label1.Location = new System.Drawing.Point(23, 249);
+            this.label1.Location = new System.Drawing.Point(23, 245);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(210, 21);
             this.label1.TabIndex = 1;
@@ -75,7 +82,7 @@ namespace VideooJuegos
             this.label2.BackColor = System.Drawing.Color.Transparent;
             this.label2.Font = new System.Drawing.Font("Cooper Black", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.ForeColor = System.Drawing.SystemColors.ControlLight;
-            this.label2.Location = new System.Drawing.Point(23, 280);
+            this.label2.Location = new System.Drawing.Point(23, 279);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(210, 44);
             this.label2.TabIndex = 1;
@@ -86,7 +93,7 @@ namespace VideooJuegos
             this.label3.BackColor = System.Drawing.Color.Transparent;
             this.label3.Font = new System.Drawing.Font("Cooper Black", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label3.ForeColor = System.Drawing.SystemColors.ControlLight;
-            this.label3.Location = new System.Drawing.Point(23, 325);
+            this.label3.Location = new System.Drawing.Point(23, 323);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(210, 21);
             this.label3.TabIndex = 1;
@@ -97,7 +104,7 @@ namespace VideooJuegos
             this.label4.BackColor = System.Drawing.Color.Transparent;
             this.label4.Font = new System.Drawing.Font("Cooper Black", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label4.ForeColor = System.Drawing.SystemColors.ControlLight;
-            this.label4.Location = new System.Drawing.Point(23, 357);
+            this.label4.Location = new System.Drawing.Point(23, 353);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(210, 21);
             this.label4.TabIndex = 1;
@@ -115,10 +122,25 @@ namespace VideooJuegos
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
             // 
+            // btnCard
+            // 
+            this.btnCard.AutoSize = true;
+            this.btnCard.BackColor = System.Drawing.Color.YellowGreen;
+            this.btnCard.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btnCard.Font = new System.Drawing.Font("Cooper Black", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnCard.Location = new System.Drawing.Point(82, 390);
+            this.btnCard.Name = "btnCard";
+            this.btnCard.Size = new System.Drawing.Size(107, 33);
+            this.btnCard.TabIndex = 2;
+            this.btnCard.Text = "Agregar";
+            this.btnCard.UseVisualStyleBackColor = false;
+            this.btnCard.Click += new System.EventHandler(this.btnCard_Click);
+            // 
             // CardVideoJuegos
             // 
             this.BackgroundImage = global::VideooJuegos.Properties.Resources.card;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.Controls.Add(this.btnCard);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
@@ -129,7 +151,21 @@ namespace VideooJuegos
             this.Size = new System.Drawing.Size(275, 450);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
+        }
+
+        private void btnCard_Click(object sender, EventArgs e)
+        {
+            if (gestorFavoritos.AgregarFavorito(new IgdbGame { Id = this.Id, Name = this.Titulo }))
+            {
+                MessageBox.Show("El juego se ha agregado a favoritos correctamente.", "Favorito agregado", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                FavoritoAgregado?.Invoke(this, EventArgs.Empty);
+            }
+            else
+            {
+                MessageBox.Show("Juego ya está en favoritos", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }

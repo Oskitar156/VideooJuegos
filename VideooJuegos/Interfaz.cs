@@ -21,10 +21,13 @@ namespace VideooJuegos
         int limit = 15;
         int offset = 0;
         IgdbManager manager;
-        
+        Favorito favoritos;
+
+
         public Interfaz()
         {
             InitializeComponent();
+            this.Load += Interfaz_Load;
             comboFiltro.Items.Add("Top Rating");
             comboFiltro.Items.Add("Top Reviews");
             comboFiltro.Items.Add("Más nuevos");
@@ -37,6 +40,7 @@ namespace VideooJuegos
 
             this.WindowState = FormWindowState.Maximized; //Pantalla completa
             this.Bounds = Screen.PrimaryScreen.Bounds;
+            flowLayoutFavoritos.Visible = false;
 
             menuStrip1.BackColor = Color.Black;
             menuStrip1.ForeColor = Color.White;
@@ -135,16 +139,16 @@ namespace VideooJuegos
             }
         }
 
-        private void Interfaz_Load(object sender, EventArgs e)
+        private async void Interfaz_Load(object sender, EventArgs e)
         {
-
+            await InicializarInterfazAsync();
         }
 
         private void cATÁLOGOToolStripMenuItem_Click_1(object sender, EventArgs e)
         {
             flowLayoutPanelCatalogo.Visible = true;
             flowLayoutPanelTienda.Visible = false;
-
+            flowLayoutFavoritos.Visible = false;
             btnAnterior.Visible = true;
             btnSiguiente.Visible = true;
         }
@@ -153,7 +157,7 @@ namespace VideooJuegos
         {
             flowLayoutPanelCatalogo.Visible = false;
             flowLayoutPanelTienda.Visible = true;
-
+            flowLayoutFavoritos.Visible = false;
             btnAnterior.Visible = false;
             btnSiguiente.Visible = false;
         }
@@ -212,6 +216,42 @@ namespace VideooJuegos
             offset += limit;
             await CargarPagina();
         }
+
+        private void CargarFavoritosIGDB()
+        {
+            flowLayoutFavoritos.Controls.Clear();
+            flowLayoutFavoritos.AutoScroll = true;
+            flowLayoutFavoritos.WrapContents = true;
+
+            favoritos = Favorito.CargarFavoritos();
+
+            foreach (IgdbGame juego in favoritos.ListaFavoritos)
+            {
+                CardVideoJuegos card = new CardVideoJuegos();
+                card.Id = juego.Id;
+                card.Titulo = juego.Name;
+
+                card.Plataforma = (juego.Platforms != null && juego.Platforms.Any())
+                    ? string.Join(", ", juego.Platforms.Select(p => p.Name))
+                    : "N/D";
+
+                card.Genero = (juego.Genres != null && juego.Genres.Any())
+                    ? string.Join(", ", juego.Genres.Select(g => g.Name))
+                    : "N/D";
+
+                card.Rating = juego.Rating > 0 ? juego.Rating.ToString("0.0") : "N/D";
+
+                if (juego.Cover != null && !string.IsNullOrEmpty(juego.Cover.Url))
+                {
+                    string url = juego.Cover.Url.StartsWith("//")
+                        ? "https:" + juego.Cover.Url
+                        : juego.Cover.Url;
+
+                    card.Imagen = url;
+                }
+
+                card.FavoritoAgregado += (s, e) => CargarFavoritosIGDB();
+                flowLayoutFavoritos.Controls.Add(card);
         private async void ComboFiltro_SelectedIndexChanged(object sender, EventArgs e)
         {
             await AplicarFiltroAsync();
