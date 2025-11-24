@@ -22,7 +22,6 @@ namespace VideooJuegos
         int limit = 15;
         int offset = 0;
         IgdbManager manager;
-        Favorito favoritos;
 
         private string filtroActual = "Top Rating";
 
@@ -227,43 +226,6 @@ namespace VideooJuegos
                 await CargarPagina();
         }
 
-        private void CargarFavoritosIGDB()
-        {
-            flowLayoutFavoritos.Controls.Clear();
-            flowLayoutFavoritos.AutoScroll = true;
-            flowLayoutFavoritos.WrapContents = true;
-
-            favoritos = Favorito.CargarFavoritos();
-
-            foreach (IgdbGame juego in favoritos.ListaFavoritos)
-            {
-                CardVideoJuegos card = new CardVideoJuegos();
-                card.Id = juego.Id;
-                card.Titulo = juego.Name;
-
-                card.Plataforma = (juego.Platforms != null && juego.Platforms.Any())
-                    ? string.Join(", ", juego.Platforms.Select(p => p.Name))
-                    : "N/D";
-
-                card.Genero = (juego.Genres != null && juego.Genres.Any())
-                    ? string.Join(", ", juego.Genres.Select(g => g.Name))
-                    : "N/D";
-
-                card.Rating = juego.Rating > 0 ? juego.Rating.ToString("0.0") : "N/D";
-
-                if (juego.Cover != null && !string.IsNullOrEmpty(juego.Cover.Url))
-                {
-                    string url = juego.Cover.Url.StartsWith("//")
-                        ? "https:" + juego.Cover.Url
-                        : juego.Cover.Url;
-
-                    card.Imagen = url;
-                }
-
-                card.FavoritoAgregado += (s, e) => CargarFavoritosIGDB();
-                flowLayoutFavoritos.Controls.Add(card);
-            }
-        }
         private async void ComboFiltro_SelectedIndexChanged(object sender, EventArgs e)
         {
             filtroActual = comboFiltro.SelectedItem.ToString();

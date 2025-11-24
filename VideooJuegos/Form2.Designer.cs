@@ -69,14 +69,14 @@
             this.txtCorreo.Location = new System.Drawing.Point(336, 219);
             this.txtCorreo.Name = "txtCorreo";
             this.txtCorreo.Size = new System.Drawing.Size(176, 22);
-            this.txtCorreo.TabIndex = 3;
+            this.txtCorreo.TabIndex = 2;
             // 
             // txtContraseña
             // 
             this.txtContraseña.Location = new System.Drawing.Point(336, 295);
             this.txtContraseña.Name = "txtContraseña";
             this.txtContraseña.Size = new System.Drawing.Size(176, 22);
-            this.txtContraseña.TabIndex = 4;
+            this.txtContraseña.TabIndex = 3;
             // 
             // TxtCContraseña
             // 
@@ -118,7 +118,7 @@
             this.txtNombre.Location = new System.Drawing.Point(336, 134);
             this.txtNombre.Name = "txtNombre";
             this.txtNombre.Size = new System.Drawing.Size(176, 22);
-            this.txtNombre.TabIndex = 7;
+            this.txtNombre.TabIndex = 1;
             // 
             // label5
             // 
