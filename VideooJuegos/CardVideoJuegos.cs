@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,11 +16,21 @@ namespace VideooJuegos
         private Label label4;
         private Button btnCard;
         private Label label1;
-
+        private bool _esAdmin;
+        public bool EsAdmin
+        {
+            get { return _esAdmin; }
+            set
+            {
+                _esAdmin = value;
+                btnCard.Visible = value; 
+            }
+        }
         public CardVideoJuegos()
         {
             InitializeComponent();
-        }            
+
+        }
 
         public string Titulo
         {
@@ -42,7 +53,7 @@ namespace VideooJuegos
         public string Rating
         {
             get { return label4.Text; }
-            set { label4.Text = $"Rating: {value}"; }
+            set { label4.Text = $"Precio: {value}$"; }
         }
 
         public string Imagen
@@ -132,6 +143,7 @@ namespace VideooJuegos
             this.btnCard.TabIndex = 2;
             this.btnCard.Text = "Agregar";
             this.btnCard.UseVisualStyleBackColor = false;
+            this.btnCard.Click += new System.EventHandler(this.btnCard_Click);
             // 
             // CardVideoJuegos
             // 
@@ -149,6 +161,43 @@ namespace VideooJuegos
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
+
+        }
+
+        private void btnCard_Click(object sender, EventArgs e)
+        {
+            if (!EsAdmin)
+            {
+                MessageBox.Show("Solo los administradores pueden agregar juegos.");
+                return;
+            }
+
+            var lista = TiendaManager.Cargar();
+
+            // *** GENERAR ID ÚNICO CORRECTO ***
+            int nuevoId = lista.Count > 0 ? lista.Max(j => j.Id) + 1 : 1;
+
+            JuegoTienda nuevoJuego = new JuegoTienda()
+            {
+                Id = nuevoId,
+                Titulo = this.Titulo,
+                Plataforma = this.Plataforma,
+                Genero = this.Genero,
+                Precio = double.TryParse(this.Rating.Replace("Rating: ", ""), out double p) ? p : 0,
+                Imagen = this.Imagen
+            };
+
+            // *** VALIDACIÓN POR TÍTULO (OPCIONAL) ***
+            if (lista.Any(j => j.Titulo == nuevoJuego.Titulo))
+            {
+                MessageBox.Show("Este juego ya está en la tienda.");
+                return;
+            }
+
+            lista.Add(nuevoJuego);
+            TiendaManager.Guardar(lista);
+
+            MessageBox.Show("Juego agregado a la tienda.");
 
         }
     }

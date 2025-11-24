@@ -27,6 +27,9 @@ namespace VideooJuegos
 
         private string busquedaActual = "";
 
+        public string UsuarioActualEmail { get; set; }
+        public string UsuarioActualRol { get; set; }
+
         public Interfaz()
         {
             InitializeComponent();
@@ -92,7 +95,6 @@ namespace VideooJuegos
                 CardVideoJuegos card = new CardVideoJuegos();
 
                 card.Titulo = juego.Name;
-
                 card.Plataforma = (juego.Platforms != null && juego.Platforms.Any())
                     ? string.Join(", ", juego.Platforms.Select(p => p.Name))
                     : "N/D";
@@ -112,9 +114,12 @@ namespace VideooJuegos
                     card.Imagen = url;
                 }
 
+                // 👉 AQUÍ ESTÁ LO QUE TE FALTABA
+                card.EsAdmin = (UsuarioActualRol == "Admin");
+
                 flowLayoutPanelCatalogo.Controls.Add(card);
             }
-        }               
+        }
 
         public class MyMenuRenderer : ToolStripProfessionalRenderer
         {
@@ -358,6 +363,8 @@ namespace VideooJuegos
                 // Cargar juegos desde el JSON
                 List<JuegoTienda> juegos = TiendaManager.Cargar();
 
+
+
                 if (juegos == null || juegos.Count == 0)
                 {
                     MessageBox.Show("No hay juegos en la tienda. Agrega algunos al archivo JSON.", "Tienda vacía");
@@ -375,6 +382,7 @@ namespace VideooJuegos
                     card.Rating = juego.Precio.ToString("0.00"); // Aquí puedes poner precio
                     card.Imagen = juego.Imagen;
 
+                    card.EsAdmin = (UsuarioActualRol == "Admin");
                     flowLayoutPanelTienda.Controls.Add(card);
                 }
             }
