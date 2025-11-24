@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace VideooJuegos
 {
-    internal class JuegoTienda
+    public class JuegoTienda
     {
         public int Id { get; set; }
         public string Titulo { get; set; }

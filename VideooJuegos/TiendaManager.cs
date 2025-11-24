@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace VideooJuegos
 {
-    internal class TiendaManager
+    public class TiendaManager
     {
         private static string path = "tienda.json";
 
