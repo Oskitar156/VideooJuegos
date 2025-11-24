@@ -29,6 +29,7 @@ namespace VideooJuegos
         public CardVideoJuegos()
         {
             InitializeComponent();
+           
 
         }
 

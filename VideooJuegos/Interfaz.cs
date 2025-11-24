@@ -38,6 +38,7 @@ namespace VideooJuegos
             comboFiltro.Items.Add("Top Reviews");
             comboFiltro.Items.Add("Más nuevos");
             comboFiltro.Items.Add("A–Z");
+            
 
             comboFiltro.SelectedIndex = 0; // por defecto
             comboFiltro.SelectedIndexChanged += ComboFiltro_SelectedIndexChanged;
@@ -375,6 +376,8 @@ namespace VideooJuegos
                 foreach (var juego in juegos)
                 {
                     CardVideoJuegos card = new CardVideoJuegos();
+
+                    card.Id = juego.Id;
 
                     card.Titulo = juego.Titulo;
                     card.Plataforma = juego.Plataforma;
