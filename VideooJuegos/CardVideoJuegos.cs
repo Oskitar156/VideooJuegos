@@ -15,8 +15,6 @@ namespace VideooJuegos
         private Label label4;
         private Button btnCard;
         private Label label1;
-        public event EventHandler FavoritoAgregado;
-        private Favorito gestorFavoritos = Favorito.CargarFavoritos();
 
         public CardVideoJuegos()
         {
@@ -134,7 +132,6 @@ namespace VideooJuegos
             this.btnCard.TabIndex = 2;
             this.btnCard.Text = "Agregar";
             this.btnCard.UseVisualStyleBackColor = false;
-            this.btnCard.Click += new System.EventHandler(this.btnCard_Click);
             // 
             // CardVideoJuegos
             // 
@@ -153,19 +150,6 @@ namespace VideooJuegos
             this.ResumeLayout(false);
             this.PerformLayout();
 
-        }
-
-        private void btnCard_Click(object sender, EventArgs e)
-        {
-            if (gestorFavoritos.AgregarFavorito(new IgdbGame { Id = this.Id, Name = this.Titulo }))
-            {
-                MessageBox.Show("El juego se ha agregado a favoritos correctamente.", "Favorito agregado", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                FavoritoAgregado?.Invoke(this, EventArgs.Empty);
-            }
-            else
-            {
-                MessageBox.Show("Juego ya está en favoritos", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
         }
     }
 }
