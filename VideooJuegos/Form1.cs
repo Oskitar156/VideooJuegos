@@ -15,11 +15,12 @@ namespace VideooJuegos
         {
             InitializeComponent();
 
-            // Crear administradores por defecto (Oscar y Brayan)
+            // Crear administradores por defecto
             Administrador admin = new Administrador();
             admin.CrearAdministradoresPorDefecto();
 
             txtContraseñaLogin.PasswordChar = '●';
+
             // Cargar usuarios del JSON
             usuarios = usuario.ReadDataFromJson();
         }
@@ -41,7 +42,7 @@ namespace VideooJuegos
         {
             bool isValid = true;
 
-            // Borrar mensajes de error previos
+            // Borrar errores anteriores
             foreach (var control in Controls.OfType<Label>().ToArray())
                 if (control.Tag != null && control.Tag.ToString() == "error")
                     Controls.Remove(control);
@@ -62,7 +63,7 @@ namespace VideooJuegos
             var formRegistro = new Registro();
             formRegistro.ShowDialog();
 
-            // Actualizar lista de usuarios
+            // Recargar usuarios
             usuarios = usuario.ReadDataFromJson();
         }
 
@@ -77,29 +78,22 @@ namespace VideooJuegos
             string email = txtCorreoLogin.Text;
             string password = txtContraseñaLogin.Text;
 
+            // Buscar usuario en JSON
             var userFound = usuarios.FirstOrDefault(u => u.Email == email && u.Password == password);
 
             if (userFound != null)
             {
-                Administrador admin = new Administrador();
+                MessageBox.Show($"Bienvenido {userFound.Nombres}", "Inicio exitoso");
 
-                // Verificar si es un ADMIN
-                if (admin.EsAdmin(email, password))
-                {
-                    MessageBox.Show("Bienvenido Administrador", "Inicio exitoso");
+                // Abrir ventana principal
+                Interfaz ventana = new Interfaz();
 
-                    Interfaz panelAdmin = new Interfaz(); // formulario admin
-                    panelAdmin.Show();
-                    this.Hide();
-                }
-                else
-                {
-                    MessageBox.Show($"Bienvenido {userFound.Nombres}", "Inicio exitoso");
+                // PASAR EMAIL Y ROL
+                ventana.UsuarioActualEmail = userFound.Email;
+                ventana.UsuarioActualRol = userFound.Rol;
 
-                    Interfaz panel = new Interfaz(); // formulario normal
-                    panel.Show();
-                    this.Hide();
-                }
+                ventana.Show();
+                this.Hide();
             }
             else
             {

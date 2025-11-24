@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,11 +16,34 @@ namespace VideooJuegos
         private Label label4;
         private Button btnCard;
         private Label label1;
+        private bool _esAdmin;
+        public bool EsAdmin
+        {
+            get { return _esAdmin; }
+            set
+            {
+                _esAdmin = value;
+                btnCard.Visible = value; 
+            }
+        }
 
+        public bool MostrarBoton
+        {
+            get { return btnCard.Visible; }
+            set { btnCard.Visible = value; }
+        }
+
+        public string TextoBoton
+        {
+            get { return btnCard.Text; }
+            set { btnCard.Text = value; }
+        }
         public CardVideoJuegos()
         {
             InitializeComponent();
-        }            
+           
+
+        }
 
         public string Titulo
         {
@@ -42,7 +66,7 @@ namespace VideooJuegos
         public string Rating
         {
             get { return label4.Text; }
-            set { label4.Text = $"Rating: {value}"; }
+            set { label4.Text = $"Rating: {value}$"; }
         }
 
         public string Imagen
@@ -132,6 +156,7 @@ namespace VideooJuegos
             this.btnCard.TabIndex = 2;
             this.btnCard.Text = "Agregar";
             this.btnCard.UseVisualStyleBackColor = false;
+            this.btnCard.Click += new System.EventHandler(this.btnCard_Click);
             // 
             // CardVideoJuegos
             // 
@@ -150,6 +175,52 @@ namespace VideooJuegos
             this.ResumeLayout(false);
             this.PerformLayout();
 
+        }
+
+        private void btnCard_Click(object sender, EventArgs e)
+        {
+            if (!EsAdmin)
+            {
+                MessageBox.Show("Solo los administradores pueden gestionar juegos.");
+                return;
+            }
+
+            var lista = TiendaManager.Cargar();
+
+            if (btnCard.Text == "Eliminar")
+            {
+                // Eliminar de la tienda
+                var confirmacion = MessageBox.Show(
+                    $"¿Estás seguro de eliminar '{this.Titulo}' de la tienda?",
+                    "Confirmar eliminación",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Question
+                );
+
+                if (confirmacion == DialogResult.Yes)
+                {
+                    lista.Remove(this.Id);
+                    TiendaManager.Guardar(lista);
+                    MessageBox.Show("Juego eliminado de la tienda.");
+
+                    // 🆕 Eliminar la card visualmente
+                    this.Parent?.Controls.Remove(this);
+                    this.Dispose();
+                }
+                return;
+            }
+
+            // Verificar si ya existe antes de agregar
+            if (lista.Contains(this.Id))
+            {
+                MessageBox.Show("Este juego ya está en la tienda.");
+                return;
+            }
+
+            // Agregar a la tienda
+            lista.Add(this.Id);
+            TiendaManager.Guardar(lista);
+            MessageBox.Show("Juego agregado a la tienda.");
         }
     }
 }

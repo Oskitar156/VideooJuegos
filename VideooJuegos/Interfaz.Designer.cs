@@ -40,14 +40,12 @@
             this.comboFiltro = new System.Windows.Forms.ComboBox();
             this.txtBuscar = new System.Windows.Forms.TextBox();
             this.btnBuscar = new System.Windows.Forms.Button();
-            this.flowLayoutPanelCatalogo.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // flowLayoutPanelCatalogo
             // 
             this.flowLayoutPanelCatalogo.BackColor = System.Drawing.Color.Transparent;
-            this.flowLayoutPanelCatalogo.Controls.Add(this.flowLayoutPanelTienda);
             this.flowLayoutPanelCatalogo.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flowLayoutPanelCatalogo.Location = new System.Drawing.Point(0, 39);
             this.flowLayoutPanelCatalogo.Margin = new System.Windows.Forms.Padding(4);
@@ -166,13 +164,15 @@
             this.BackColor = System.Drawing.Color.Black;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(1348, 595);
+
             this.Controls.Add(this.flowLayoutFavoritos);
-            this.Controls.Add(this.btnBuscar);
+            this.Controls.Add(this.flowLayoutPanelTienda);     
+            this.Controls.Add(this.flowLayoutPanelCatalogo);
+            this.Controls.Add(this.btnBuscar);  
             this.Controls.Add(this.txtBuscar);
             this.Controls.Add(this.comboFiltro);
             this.Controls.Add(this.btnSiguiente);
             this.Controls.Add(this.btnAnterior);
-            this.Controls.Add(this.flowLayoutPanelCatalogo);
             this.Controls.Add(this.menuStrip1);
             this.ForeColor = System.Drawing.SystemColors.ControlText;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -181,7 +181,6 @@
             this.Name = "Interfaz";
             this.Text = "Inicio";
             this.Load += new System.EventHandler(this.Interfaz_Load);
-            this.flowLayoutPanelCatalogo.ResumeLayout(false);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);

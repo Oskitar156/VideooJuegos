@@ -8,21 +8,23 @@ using System.Threading.Tasks;
 
 namespace VideooJuegos
 {
-    public class TiendaManager
+    public static class TiendaManager
     {
-        private static string path = "tienda.json";
+        private static string rutaJson = "tienda.json";
 
-        public static List<JuegoTienda> Cargar()
+        public static List<long> Cargar()
         {
-            if (!File.Exists(path))
-                return new List<JuegoTienda>();
+            if (!File.Exists(rutaJson))
+                return new List<long>();
 
-            return JsonConvert.DeserializeObject<List<JuegoTienda>>(File.ReadAllText(path));
+            string json = File.ReadAllText(rutaJson);
+            return JsonConvert.DeserializeObject<List<long>>(json) ?? new List<long>();
         }
 
-        public static void Guardar(List<JuegoTienda> juegos)
+        public static void Guardar(List<long> ids)
         {
-            File.WriteAllText(path, JsonConvert.SerializeObject(juegos, Formatting.Indented));
+            string json = JsonConvert.SerializeObject(ids, Formatting.Indented);
+            File.WriteAllText(rutaJson, json);
         }
     }
 }
