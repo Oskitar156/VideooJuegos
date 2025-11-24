@@ -10,12 +10,12 @@ using System.Windows.Forms;
 
 namespace VideooJuegos
 {
-    
+
     public partial class Interfaz : Form
     {
         private Color normalBack = Color.Black;
         private Color normalFore = Color.White;
-        private Color hoverBack = Color.FromArgb(40, 40, 40); // gris oscuro suave
+        private Color hoverBack = Color.FromArgb(40, 40, 40);
         private Color hoverFore = Color.White;
         private string clientId = "6y6h5fn6r5qhrlwcql2w4zvq3n0ky9";
         private string clientSecret = "z7b4aldrtv5r48ert3dlemw1fn3vm4";
@@ -24,7 +24,6 @@ namespace VideooJuegos
         IgdbManager manager;
 
         private string filtroActual = "Top Rating";
-
         private string busquedaActual = "";
 
         public string UsuarioActualEmail { get; set; }
@@ -38,35 +37,29 @@ namespace VideooJuegos
             comboFiltro.Items.Add("Top Reviews");
             comboFiltro.Items.Add("Más nuevos");
             comboFiltro.Items.Add("A–Z");
-            
 
-            comboFiltro.SelectedIndex = 0; // por defecto
+            comboFiltro.SelectedIndex = 0;
             comboFiltro.SelectedIndexChanged += ComboFiltro_SelectedIndexChanged;
 
-
-
-            this.WindowState = FormWindowState.Maximized; //Pantalla completa
+            this.WindowState = FormWindowState.Maximized;
             this.Bounds = Screen.PrimaryScreen.Bounds;
             flowLayoutFavoritos.Visible = false;
 
             menuStrip1.BackColor = Color.Black;
             menuStrip1.ForeColor = Color.White;
-
             menuStrip1.RenderMode = ToolStripRenderMode.Professional;
             menuStrip1.Renderer = new MyMenuRenderer();
 
             btnBuscar.Click += BtnBuscar_Click;
             txtBuscar.KeyDown += TxtBuscar_KeyDown;
-
-            _ = InicializarInterfazAsync();
         }
-                
+
         private async Task InicializarInterfazAsync()
         {
             try
-            {                
+            {
                 string accessToken = await IgdbTokenManager.GetTokenAsync(clientId, clientSecret);
-                IgdbManager manager = new IgdbManager(clientId, accessToken);
+                manager = new IgdbManager(clientId, accessToken);
 
                 string query = @"
                 fields id,name,rating,first_release_date,genres.name,platforms.name,cover.url;
@@ -76,7 +69,6 @@ namespace VideooJuegos
                 ";
 
                 List<IgdbGame> juegos = await manager.GetGamesAsync(query);
-
                 CargarJuegosEnCatalogo(juegos);
             }
             catch (Exception ex)
@@ -94,7 +86,7 @@ namespace VideooJuegos
             foreach (var juego in juegos)
             {
                 CardVideoJuegos card = new CardVideoJuegos();
-
+                card.Id = juego.Id;
                 card.Titulo = juego.Name;
                 card.Plataforma = (juego.Platforms != null && juego.Platforms.Any())
                     ? string.Join(", ", juego.Platforms.Select(p => p.Name))
@@ -115,9 +107,7 @@ namespace VideooJuegos
                     card.Imagen = url;
                 }
 
-                // 👉 AQUÍ ESTÁ LO QUE TE FALTABA
                 card.EsAdmin = (UsuarioActualRol == "Admin");
-
                 flowLayoutPanelCatalogo.Controls.Add(card);
             }
         }
@@ -126,12 +116,10 @@ namespace VideooJuegos
         {
             protected override void OnRenderMenuItemBackground(ToolStripItemRenderEventArgs e)
             {
-                // Rectángulo del item
                 Rectangle rect = new Rectangle(Point.Empty, e.Item.Size);
 
                 if (e.Item.Selected && !e.Item.Pressed)
                 {
-                    // HOVER: gris oscuro
                     using (Brush b = new SolidBrush(Color.FromArgb(80, 80, 80)))
                         e.Graphics.FillRectangle(b, rect);
 
@@ -139,7 +127,6 @@ namespace VideooJuegos
                 }
                 else
                 {
-                    // NORMAL: negro
                     using (Brush b = new SolidBrush(Color.Black))
                         e.Graphics.FillRectangle(b, rect);
 
@@ -151,34 +138,43 @@ namespace VideooJuegos
         private async void Interfaz_Load(object sender, EventArgs e)
         {
             await InicializarInterfazAsync();
+
+            flowLayoutPanelCatalogo.Visible = true;
+            flowLayoutPanelCatalogo.BringToFront();
+            flowLayoutPanelTienda.Visible = false;
+            flowLayoutFavoritos.Visible = false;
         }
 
         private void cATÁLOGOToolStripMenuItem_Click_1(object sender, EventArgs e)
         {
-            flowLayoutPanelCatalogo.Visible = true;
             flowLayoutPanelTienda.Visible = false;
             flowLayoutFavoritos.Visible = false;
+
+            flowLayoutPanelCatalogo.Visible = true;
+            flowLayoutPanelCatalogo.BringToFront();
+
             btnAnterior.Visible = true;
             btnSiguiente.Visible = true;
+
+            flowLayoutPanelCatalogo.Refresh();
         }
 
-        private void tIENDAToolStripMenuItem_Click(object sender, EventArgs e)
+        private async void tIENDAToolStripMenuItem_Click(object sender, EventArgs e)
         {
             flowLayoutPanelCatalogo.Visible = false;
             flowLayoutPanelTienda.Visible = true;
             flowLayoutFavoritos.Visible = false;
             btnAnterior.Visible = false;
             btnSiguiente.Visible = false;
-            CargarTienda();
-
+            await CargarTienda();
         }
 
         private void MenuItem_MouseEnter(object sender, EventArgs e)
         {
             if (sender is ToolStripMenuItem item)
             {
-                item.BackColor = hoverBack;   // tapa el cian con gris oscuro
-                item.ForeColor = hoverFore;   // blanco, se ve bien
+                item.BackColor = hoverBack;
+                item.ForeColor = hoverFore;
             }
         }
 
@@ -186,8 +182,8 @@ namespace VideooJuegos
         {
             if (sender is ToolStripMenuItem item)
             {
-                item.BackColor = normalBack;  // vuelve a negro
-                item.ForeColor = normalFore;  // blanco
+                item.BackColor = normalBack;
+                item.ForeColor = normalFore;
             }
         }
 
@@ -199,7 +195,6 @@ namespace VideooJuegos
                 manager = new IgdbManager(clientId, accessToken);
             }
 
-            // 👉 USAMOS EL FILTRO ACTUAL
             string query = GenerarQueryFiltro(filtroActual, limit, offset);
 
             List<IgdbGame> juegos = await manager.GetGamesAsync(query);
@@ -235,9 +230,10 @@ namespace VideooJuegos
         private async void ComboFiltro_SelectedIndexChanged(object sender, EventArgs e)
         {
             filtroActual = comboFiltro.SelectedItem.ToString();
-            offset = 0; 
+            offset = 0;
             await AplicarFiltroAsync();
         }
+
         private async Task AplicarFiltroAsync()
         {
             if (manager == null)
@@ -254,6 +250,7 @@ namespace VideooJuegos
             btnAnterior.Enabled = offset > 0;
             btnSiguiente.Enabled = juegos.Count == limit;
         }
+
         private string GenerarQueryFiltro(string filtro, int limit, int offset)
         {
             switch (filtro)
@@ -296,6 +293,7 @@ namespace VideooJuegos
 
             return "";
         }
+
         private async void BtnBuscar_Click(object sender, EventArgs e)
         {
             await BuscarJuegoAsync();
@@ -310,6 +308,7 @@ namespace VideooJuegos
                 await BuscarJuegoAsync();
             }
         }
+
         private async Task BuscarJuegoAsync()
         {
             busquedaActual = txtBuscar.Text.Trim();
@@ -319,9 +318,10 @@ namespace VideooJuegos
                 return;
             }
 
-            offset = 0; // reiniciar a la primera página
+            offset = 0;
             await CargarPaginaBusquedaAsync();
         }
+
         private async Task CargarPaginaBusquedaAsync()
         {
             if (manager == null)
@@ -331,11 +331,11 @@ namespace VideooJuegos
             }
 
             string query = $@"
-        search ""{busquedaActual}"";
-        fields id,name,rating,genres.name,platforms.name,cover.url,first_release_date;
-        limit {limit};
-        offset {offset};
-    ";
+            search ""{busquedaActual}"";
+            fields id,name,rating,genres.name,platforms.name,cover.url,first_release_date;
+            limit {limit};
+            offset {offset};
+            ";
 
             try
             {
@@ -349,49 +349,85 @@ namespace VideooJuegos
             {
                 MessageBox.Show("Error en la búsqueda: " + ex.Message);
             }
-            
         }
-        private void CargarTienda()
+
+        private async Task CargarTienda()
         {
+            flowLayoutPanelTienda.Visible = true;
+            flowLayoutPanelTienda.BringToFront();
+
             try
             {
-                // Limpia la tienda
                 flowLayoutPanelTienda.Controls.Clear();
                 flowLayoutPanelTienda.AutoScroll = true;
                 flowLayoutPanelTienda.WrapContents = true;
                 flowLayoutPanelTienda.FlowDirection = FlowDirection.LeftToRight;
 
-                // Cargar juegos desde el JSON
-                List<JuegoTienda> juegos = TiendaManager.Cargar();
+                List<long> idsJuegos = TiendaManager.Cargar();
 
-
-
-                if (juegos == null || juegos.Count == 0)
+                if (idsJuegos == null || idsJuegos.Count == 0)
                 {
-                    MessageBox.Show("No hay juegos en la tienda. Agrega algunos al archivo JSON.", "Tienda vacía");
+                    MessageBox.Show("No hay juegos en la tienda. Agrega algunos desde el catálogo.", "Tienda vacía");
                     return;
                 }
 
-                // Crear visualmente cada card
-                foreach (var juego in juegos)
+                if (manager == null)
+                {
+                    string accessToken = await IgdbTokenManager.GetTokenAsync(clientId, clientSecret);
+                    manager = new IgdbManager(clientId, accessToken);
+                }
+
+                string ids = string.Join(",", idsJuegos);
+                string query = $@"
+                    fields id,name,rating,first_release_date,genres.name,platforms.name,cover.url;
+                    where id = ({ids});
+                ";
+
+                List<IgdbGame> juegosDeLaApi = await manager.GetGamesAsync(query);
+
+                if (juegosDeLaApi == null || juegosDeLaApi.Count == 0)
+                {
+                    MessageBox.Show("No se pudieron cargar los juegos de la API.", "Error");
+                    return;
+                }
+
+                foreach (var juegoApi in juegosDeLaApi)
                 {
                     CardVideoJuegos card = new CardVideoJuegos();
 
-                    card.Id = juego.Id;
+                    card.Id = juegoApi.Id;
+                    card.Titulo = juegoApi.Name;
 
-                    card.Titulo = juego.Titulo;
-                    card.Plataforma = juego.Plataforma;
-                    card.Genero = juego.Genero;
-                    card.Rating = juego.Precio.ToString("0.00"); // Aquí puedes poner precio
-                    card.Imagen = juego.Imagen;
+                    card.Plataforma = (juegoApi.Platforms != null && juegoApi.Platforms.Any())
+                        ? string.Join(", ", juegoApi.Platforms.Select(p => p.Name))
+                        : "N/D";
+
+                    card.Genero = (juegoApi.Genres != null && juegoApi.Genres.Any())
+                        ? string.Join(", ", juegoApi.Genres.Select(g => g.Name))
+                        : "N/D";
+
+                    card.Rating = juegoApi.Rating > 0 ? juegoApi.Rating.ToString("0.0") : "N/D";
+
+                    if (juegoApi.Cover != null && !string.IsNullOrEmpty(juegoApi.Cover.Url))
+                    {
+                        string url = juegoApi.Cover.Url.StartsWith("//")
+                            ? "https:" + juegoApi.Cover.Url
+                            : juegoApi.Cover.Url;
+
+                        card.Imagen = url;
+                    }
 
                     card.EsAdmin = (UsuarioActualRol == "Admin");
+                    card.TextoBoton = "Eliminar";
+
                     flowLayoutPanelTienda.Controls.Add(card);
                 }
+
+                flowLayoutPanelTienda.Refresh();
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error al cargar la tienda: " + ex.Message);
+                MessageBox.Show("Error al cargar la tienda: " + ex.Message, "Error");
             }
         }
     }

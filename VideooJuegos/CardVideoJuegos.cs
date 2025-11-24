@@ -26,6 +26,18 @@ namespace VideooJuegos
                 btnCard.Visible = value; 
             }
         }
+
+        public bool MostrarBoton
+        {
+            get { return btnCard.Visible; }
+            set { btnCard.Visible = value; }
+        }
+
+        public string TextoBoton
+        {
+            get { return btnCard.Text; }
+            set { btnCard.Text = value; }
+        }
         public CardVideoJuegos()
         {
             InitializeComponent();
@@ -54,7 +66,7 @@ namespace VideooJuegos
         public string Rating
         {
             get { return label4.Text; }
-            set { label4.Text = $"Precio: {value}$"; }
+            set { label4.Text = $"Rating: {value}$"; }
         }
 
         public string Imagen
@@ -169,37 +181,46 @@ namespace VideooJuegos
         {
             if (!EsAdmin)
             {
-                MessageBox.Show("Solo los administradores pueden agregar juegos.");
+                MessageBox.Show("Solo los administradores pueden gestionar juegos.");
                 return;
             }
 
             var lista = TiendaManager.Cargar();
 
-            // *** GENERAR ID ÚNICO CORRECTO ***
-            int nuevoId = lista.Count > 0 ? lista.Max(j => j.Id) + 1 : 1;
-
-            JuegoTienda nuevoJuego = new JuegoTienda()
+            if (btnCard.Text == "Eliminar")
             {
-                Id = nuevoId,
-                Titulo = this.Titulo,
-                Plataforma = this.Plataforma,
-                Genero = this.Genero,
-                Precio = double.TryParse(this.Rating.Replace("Rating: ", ""), out double p) ? p : 0,
-                Imagen = this.Imagen
-            };
+                // Eliminar de la tienda
+                var confirmacion = MessageBox.Show(
+                    $"¿Estás seguro de eliminar '{this.Titulo}' de la tienda?",
+                    "Confirmar eliminación",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Question
+                );
 
-            // *** VALIDACIÓN POR TÍTULO (OPCIONAL) ***
-            if (lista.Any(j => j.Titulo == nuevoJuego.Titulo))
+                if (confirmacion == DialogResult.Yes)
+                {
+                    lista.Remove(this.Id);
+                    TiendaManager.Guardar(lista);
+                    MessageBox.Show("Juego eliminado de la tienda.");
+
+                    // 🆕 Eliminar la card visualmente
+                    this.Parent?.Controls.Remove(this);
+                    this.Dispose();
+                }
+                return;
+            }
+
+            // Verificar si ya existe antes de agregar
+            if (lista.Contains(this.Id))
             {
                 MessageBox.Show("Este juego ya está en la tienda.");
                 return;
             }
 
-            lista.Add(nuevoJuego);
+            // Agregar a la tienda
+            lista.Add(this.Id);
             TiendaManager.Guardar(lista);
-
             MessageBox.Show("Juego agregado a la tienda.");
-
         }
     }
 }
