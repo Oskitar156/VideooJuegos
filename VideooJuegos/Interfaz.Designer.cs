@@ -56,10 +56,10 @@
             // flowLayoutPanelTienda
             // 
             this.flowLayoutPanelTienda.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.flowLayoutPanelTienda.Location = new System.Drawing.Point(4, 4);
+            this.flowLayoutPanelTienda.Location = new System.Drawing.Point(0, 39);
             this.flowLayoutPanelTienda.Margin = new System.Windows.Forms.Padding(4);
             this.flowLayoutPanelTienda.Name = "flowLayoutPanelTienda";
-            this.flowLayoutPanelTienda.Size = new System.Drawing.Size(267, 0);
+            this.flowLayoutPanelTienda.Size = new System.Drawing.Size(1348, 556);
             this.flowLayoutPanelTienda.TabIndex = 0;
             // 
             // menuStrip1
@@ -126,6 +126,8 @@
             this.flowLayoutFavoritos.Name = "flowLayoutFavoritos";
             this.flowLayoutFavoritos.Size = new System.Drawing.Size(1348, 556);
             this.flowLayoutFavoritos.TabIndex = 4;
+            this.flowLayoutFavoritos.Paint += new System.Windows.Forms.PaintEventHandler(this.flowLayoutFavoritos_Paint);
+            // 
             // comboFiltro
             // 
             this.comboFiltro.BackColor = System.Drawing.Color.Black;
@@ -164,11 +166,10 @@
             this.BackColor = System.Drawing.Color.Black;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(1348, 595);
-
             this.Controls.Add(this.flowLayoutFavoritos);
-            this.Controls.Add(this.flowLayoutPanelTienda);     
+            this.Controls.Add(this.flowLayoutPanelTienda);
             this.Controls.Add(this.flowLayoutPanelCatalogo);
-            this.Controls.Add(this.btnBuscar);  
+            this.Controls.Add(this.btnBuscar);
             this.Controls.Add(this.txtBuscar);
             this.Controls.Add(this.comboFiltro);
             this.Controls.Add(this.btnSiguiente);

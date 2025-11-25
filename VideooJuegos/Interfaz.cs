@@ -88,10 +88,12 @@ namespace VideooJuegos
                 CardVideoJuegos card = new CardVideoJuegos();
                 card.Id = juego.Id;
                 card.Titulo = juego.Name;
+
                 card.Plataforma = (juego.Platforms != null && juego.Platforms.Any())
                     ? string.Join(", ", juego.Platforms.Select(p => p.Name))
                     : "N/D";
 
+                // ✅ EN CATÁLOGO: Mostrar GÉNERO
                 card.Genero = (juego.Genres != null && juego.Genres.Any())
                     ? string.Join(", ", juego.Genres.Select(g => g.Name))
                     : "N/D";
@@ -108,6 +110,8 @@ namespace VideooJuegos
                 }
 
                 card.EsAdmin = (UsuarioActualRol == "Admin");
+                card.MostrarBotonEditar = false; // ❌ NO mostrar botón editar en catálogo
+
                 flowLayoutPanelCatalogo.Controls.Add(card);
             }
         }
@@ -363,9 +367,10 @@ namespace VideooJuegos
                 flowLayoutPanelTienda.WrapContents = true;
                 flowLayoutPanelTienda.FlowDirection = FlowDirection.LeftToRight;
 
-                List<long> idsJuegos = TiendaManager.Cargar();
+                // ✅ CARGAR JUEGOS CON PRECIO Y STOCK
+                List<JuegoTienda> juegosTienda = TiendaManager.Cargar();
 
-                if (idsJuegos == null || idsJuegos.Count == 0)
+                if (juegosTienda == null || juegosTienda.Count == 0)
                 {
                     MessageBox.Show("No hay juegos en la tienda. Agrega algunos desde el catálogo.", "Tienda vacía");
                     return;
@@ -377,11 +382,14 @@ namespace VideooJuegos
                     manager = new IgdbManager(clientId, accessToken);
                 }
 
+                // Obtener solo los IDs para la consulta a la API
+                List<long> idsJuegos = juegosTienda.Select(j => j.Id).ToList();
                 string ids = string.Join(",", idsJuegos);
+
                 string query = $@"
-                    fields id,name,rating,first_release_date,genres.name,platforms.name,cover.url;
-                    where id = ({ids});
-                ";
+            fields id,name,rating,first_release_date,genres.name,platforms.name,cover.url;
+            where id = ({ids});
+        ";
 
                 List<IgdbGame> juegosDeLaApi = await manager.GetGamesAsync(query);
 
@@ -391,8 +399,15 @@ namespace VideooJuegos
                     return;
                 }
 
+                // Crear las tarjetas con la información combinada
                 foreach (var juegoApi in juegosDeLaApi)
                 {
+                    // Buscar el precio y stock del juego en la tienda
+                    var juegoTienda = juegosTienda.Find(j => j.Id == juegoApi.Id);
+
+                    if (juegoTienda == null)
+                        continue; // Si no se encuentra, saltar este juego
+
                     CardVideoJuegos card = new CardVideoJuegos();
 
                     card.Id = juegoApi.Id;
@@ -402,9 +417,8 @@ namespace VideooJuegos
                         ? string.Join(", ", juegoApi.Platforms.Select(p => p.Name))
                         : "N/D";
 
-                    card.Genero = (juegoApi.Genres != null && juegoApi.Genres.Any())
-                        ? string.Join(", ", juegoApi.Genres.Select(g => g.Name))
-                        : "N/D";
+                    // ✅ USAR EL PRECIO DEL JSON
+                    card.Precio = $"${juegoTienda.Precio:F2}";
 
                     card.Rating = juegoApi.Rating > 0 ? juegoApi.Rating.ToString("0.0") : "N/D";
 
@@ -417,8 +431,20 @@ namespace VideooJuegos
                         card.Imagen = url;
                     }
 
+                    // ✅ MOSTRAR STOCK EN LUGAR DE LA URL DE IMAGEN
+                    // Puedes usar la propiedad Genero para mostrar el stock (ya que no se usa en tienda)
+                    card.Genero = $"Stock: {juegoTienda.Stock} unidades";
+
                     card.EsAdmin = (UsuarioActualRol == "Admin");
-                    card.TextoBoton = "Eliminar";
+
+                    if (UsuarioActualRol == "Admin")
+                    {
+                        card.MostrarBotonEditar = true;
+                    }
+                    else
+                    {
+                        card.MostrarBotonEditar = false;
+                    }
 
                     flowLayoutPanelTienda.Controls.Add(card);
                 }
@@ -429,6 +455,11 @@ namespace VideooJuegos
             {
                 MessageBox.Show("Error al cargar la tienda: " + ex.Message, "Error");
             }
+        }
+
+        private void flowLayoutFavoritos_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 }

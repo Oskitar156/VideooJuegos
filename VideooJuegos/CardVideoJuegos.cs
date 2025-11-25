@@ -15,22 +15,35 @@ namespace VideooJuegos
         private Label label3;
         private Label label4;
         private Button btnCard;
+        private Button btnEditar;
         private Label label1;
         private bool _esAdmin;
+
         public bool EsAdmin
         {
             get { return _esAdmin; }
             set
             {
                 _esAdmin = value;
-                btnCard.Visible = value; 
+                btnCard.Visible = value;
+                btnEditar.Visible = value;
             }
         }
 
         public bool MostrarBoton
         {
             get { return btnCard.Visible; }
-            set { btnCard.Visible = value; }
+            set
+            {
+                btnCard.Visible = value;
+            }
+        }
+
+        // Propiedad para controlar si se muestra el botón editar
+        public bool MostrarBotonEditar
+        {
+            get { return btnEditar.Visible; }
+            set { btnEditar.Visible = value; }
         }
 
         public string TextoBoton
@@ -38,11 +51,10 @@ namespace VideooJuegos
             get { return btnCard.Text; }
             set { btnCard.Text = value; }
         }
+
         public CardVideoJuegos()
         {
             InitializeComponent();
-           
-
         }
 
         public string Titulo
@@ -57,7 +69,15 @@ namespace VideooJuegos
             set { label2.Text = value; }
         }
 
+        // Propiedad para Género (en catálogo)
         public string Genero
+        {
+            get { return label3.Text; }
+            set { label3.Text = value; }
+        }
+
+        // Propiedad para Precio (en tienda)
+        public string Precio
         {
             get { return label3.Text; }
             set { label3.Text = value; }
@@ -66,7 +86,7 @@ namespace VideooJuegos
         public string Rating
         {
             get { return label4.Text; }
-            set { label4.Text = $"Rating: {value}$"; }
+            set { label4.Text = $"Rating: {value}"; }
         }
 
         public string Imagen
@@ -85,6 +105,7 @@ namespace VideooJuegos
             this.label4 = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.btnCard = new System.Windows.Forms.Button();
+            this.btnEditar = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -110,7 +131,7 @@ namespace VideooJuegos
             this.label2.TabIndex = 1;
             this.label2.Text = "Plataforma";
             // 
-            // label3
+            // label3 (DUAL: Género en catálogo / Precio en tienda)
             // 
             this.label3.BackColor = System.Drawing.Color.Transparent;
             this.label3.Font = new System.Drawing.Font("Cooper Black", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -119,7 +140,7 @@ namespace VideooJuegos
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(210, 21);
             this.label3.TabIndex = 1;
-            this.label3.Text = "Genero";
+            this.label3.Text = "Info";
             // 
             // label4
             // 
@@ -144,15 +165,31 @@ namespace VideooJuegos
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
             // 
-            // btnCard
+            // btnEditar (A LA IZQUIERDA - SOLO EN TIENDA)
+            // 
+            this.btnEditar.AutoSize = true;
+            this.btnEditar.BackColor = System.Drawing.Color.DodgerBlue;
+            this.btnEditar.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btnEditar.Font = new System.Drawing.Font("Cooper Black", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnEditar.ForeColor = System.Drawing.Color.White;
+            this.btnEditar.Location = new System.Drawing.Point(27, 390);
+            this.btnEditar.Name = "btnEditar";
+            this.btnEditar.Size = new System.Drawing.Size(95, 33);
+            this.btnEditar.TabIndex = 3;
+            this.btnEditar.Text = "Editar";
+            this.btnEditar.UseVisualStyleBackColor = false;
+            this.btnEditar.Visible = false; // Oculto por defecto
+            this.btnEditar.Click += new System.EventHandler(this.btnEditar_Click);
+            // 
+            // btnCard (ELIMINAR/AGREGAR - A LA DERECHA)
             // 
             this.btnCard.AutoSize = true;
             this.btnCard.BackColor = System.Drawing.Color.YellowGreen;
             this.btnCard.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.btnCard.Font = new System.Drawing.Font("Cooper Black", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnCard.Location = new System.Drawing.Point(82, 390);
+            this.btnCard.Font = new System.Drawing.Font("Cooper Black", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnCard.Location = new System.Drawing.Point(138, 390);
             this.btnCard.Name = "btnCard";
-            this.btnCard.Size = new System.Drawing.Size(107, 33);
+            this.btnCard.Size = new System.Drawing.Size(95, 33);
             this.btnCard.TabIndex = 2;
             this.btnCard.Text = "Agregar";
             this.btnCard.UseVisualStyleBackColor = false;
@@ -162,6 +199,7 @@ namespace VideooJuegos
             // 
             this.BackgroundImage = global::VideooJuegos.Properties.Resources.card;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.Controls.Add(this.btnEditar);
             this.Controls.Add(this.btnCard);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
@@ -171,10 +209,27 @@ namespace VideooJuegos
             this.DoubleBuffered = true;
             this.Name = "CardVideoJuegos";
             this.Size = new System.Drawing.Size(275, 450);
+            this.Load += new System.EventHandler(this.CardVideoJuegos_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
+        }
 
+        private void btnEditar_Click(object sender, EventArgs e)
+        {
+            if (!EsAdmin)
+            {
+                MessageBox.Show("Solo los administradores pueden editar juegos.");
+                return;
+            }
+
+            // Crear y mostrar el formulario de edición
+            FormEditarJuego formEditar = new FormEditarJuego(this);
+            if (formEditar.ShowDialog() == DialogResult.OK)
+            {
+                this.Refresh();
+                MessageBox.Show("Juego actualizado correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
         }
 
         private void btnCard_Click(object sender, EventArgs e)
@@ -185,11 +240,11 @@ namespace VideooJuegos
                 return;
             }
 
+            // ✅ CARGAR LISTA DE JUEGOS (AHORA SON OBJETOS JuegoTienda)
             var lista = TiendaManager.Cargar();
 
             if (btnCard.Text == "Eliminar")
             {
-                // Eliminar de la tienda
                 var confirmacion = MessageBox.Show(
                     $"¿Estás seguro de eliminar '{this.Titulo}' de la tienda?",
                     "Confirmar eliminación",
@@ -199,28 +254,39 @@ namespace VideooJuegos
 
                 if (confirmacion == DialogResult.Yes)
                 {
-                    lista.Remove(this.Id);
-                    TiendaManager.Guardar(lista);
+                    // ✅ ELIMINAR USANDO EL MÉTODO DE TiendaManager
+                    TiendaManager.EliminarJuego(this.Id);
                     MessageBox.Show("Juego eliminado de la tienda.");
 
-                    // 🆕 Eliminar la card visualmente
                     this.Parent?.Controls.Remove(this);
                     this.Dispose();
                 }
                 return;
             }
 
-            // Verificar si ya existe antes de agregar
-            if (lista.Contains(this.Id))
+            // ✅ VERIFICAR SI YA EXISTE (BUSCAR POR ID EN LA LISTA)
+            if (lista.Any(j => j.Id == this.Id))
             {
                 MessageBox.Show("Este juego ya está en la tienda.");
                 return;
             }
 
-            // Agregar a la tienda
-            lista.Add(this.Id);
-            TiendaManager.Guardar(lista);
-            MessageBox.Show("Juego agregado a la tienda.");
+            // ✅ MOSTRAR DIÁLOGO PARA INGRESAR PRECIO Y STOCK
+            FormAgregarATienda formAgregar = new FormAgregarATienda();
+            if (formAgregar.ShowDialog() == DialogResult.OK)
+            {
+                decimal precio = formAgregar.Precio;
+                int stock = formAgregar.Stock;
+
+                // ✅ AGREGAR USANDO EL MÉTODO DE TiendaManager
+                TiendaManager.AgregarJuego(this.Id, precio, stock);
+                MessageBox.Show($"Juego agregado a la tienda.\nPrecio: ${precio:F2}\nStock: {stock} unidades");
+            }
+        }
+
+        private void CardVideoJuegos_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }
