@@ -174,7 +174,9 @@ namespace VideooJuegos
             flowLayoutFavoritos.Visible = false;
             btnAnterior.Visible = false;
             btnSiguiente.Visible = false;
-            await CargarTienda();
+            comboFiltro.Visible = false;
+            offset = 0;
+            await CargarTienda(); // carga inicial sin paginación por filtro
         }
 
         private void MenuItem_MouseEnter(object sender, EventArgs e)
@@ -219,9 +221,19 @@ namespace VideooJuegos
                 offset -= limit;
 
                 if (!string.IsNullOrEmpty(busquedaActual))
-                    await CargarPaginaBusquedaAsync();
+                {
+                    if (flowLayoutPanelTienda.Visible)
+                        await BuscarEnTiendaAsync();
+                    else
+                        await CargarPaginaBusquedaAsync();
+                }
                 else
-                    await CargarPagina();
+                {
+                    if (flowLayoutPanelTienda.Visible)
+                        await CargarTiendaFiltradaAsync();
+                    else
+                        await CargarPagina();
+                }
             }
         }
 
@@ -230,16 +242,30 @@ namespace VideooJuegos
             offset += limit;
 
             if (!string.IsNullOrEmpty(busquedaActual))
-                await CargarPaginaBusquedaAsync();
+            {
+                if (flowLayoutPanelTienda.Visible)
+                    await BuscarEnTiendaAsync();
+                else
+                    await CargarPaginaBusquedaAsync();
+            }
             else
-                await CargarPagina();
+            {
+                if (flowLayoutPanelTienda.Visible)
+                    await CargarTiendaFiltradaAsync();
+                else
+                    await CargarPagina();
+            }
         }
 
         private async void ComboFiltro_SelectedIndexChanged(object sender, EventArgs e)
         {
             filtroActual = comboFiltro.SelectedItem.ToString();
             offset = 0;
-            await AplicarFiltroAsync();
+
+            if (flowLayoutPanelTienda.Visible)
+                await CargarTiendaFiltradaAsync();
+            else
+                await AplicarFiltroAsync();
         }
 
         private async Task AplicarFiltroAsync()
@@ -327,7 +353,11 @@ namespace VideooJuegos
             }
 
             offset = 0;
-            await CargarPaginaBusquedaAsync();
+
+            if (flowLayoutPanelTienda.Visible)
+                await BuscarEnTiendaAsync();
+            else
+                await CargarPaginaBusquedaAsync();
         }
 
         private async Task CargarPaginaBusquedaAsync()
@@ -361,6 +391,7 @@ namespace VideooJuegos
 
         private async Task CargarTienda()
         {
+            // carga inicial de la tienda sin paginación por filtro
             flowLayoutPanelTienda.Visible = true;
             flowLayoutPanelTienda.BringToFront();
 
@@ -462,6 +493,219 @@ namespace VideooJuegos
             catch (Exception ex)
             {
                 MessageBox.Show("Error al cargar la tienda: " + ex.Message, "Error");
+            }
+        }
+
+        private async Task CargarTiendaFiltradaAsync()
+        {
+            // Similar a CargarTienda pero aplica filtroActual, limit y offset
+            flowLayoutPanelTienda.Visible = true;
+            flowLayoutPanelTienda.BringToFront();
+
+            try
+            {
+                flowLayoutPanelTienda.Controls.Clear();
+                flowLayoutPanelTienda.AutoScroll = true;
+                flowLayoutPanelTienda.WrapContents = true;
+                flowLayoutPanelTienda.FlowDirection = FlowDirection.LeftToRight;
+
+                List<JuegoTienda> juegosTienda = TiendaManager.Cargar();
+
+                if (juegosTienda == null || juegosTienda.Count == 0)
+                {
+                    MessageBox.Show("No hay juegos en la tienda. Agrega algunos desde el catálogo.", "Tienda vacía");
+                    return;
+                }
+
+                if (manager == null)
+                {
+                    string accessToken = await IgdbTokenManager.GetTokenAsync(clientId, clientSecret);
+                    manager = new IgdbManager(clientId, accessToken);
+                }
+
+                List<long> idsJuegos = juegosTienda.Select(j => j.Id).ToList();
+                string ids = string.Join(",", idsJuegos);
+
+                // Construir where y sort según filtroActual
+                string whereClause = $"where id = ({ids})";
+                string sortClause = "";
+                switch (filtroActual)
+                {
+                    case "Top Rating":
+                        whereClause += " & rating != null";
+                        sortClause = "sort rating desc;";
+                        break;
+                    case "Top Reviews":
+                        whereClause += " & aggregated_rating != null";
+                        sortClause = "sort aggregated_rating desc;";
+                        break;
+                    case "Más nuevos":
+                        whereClause += " & first_release_date != null";
+                        sortClause = "sort first_release_date desc;";
+                        break;
+                    case "A–Z":
+                        sortClause = "sort name asc;";
+                        break;
+                }
+
+                string query = $@"
+            fields id,name,rating,first_release_date,genres.name,platforms.name,cover.url;
+            {whereClause};
+            {sortClause}
+            limit {limit};
+            offset {offset};
+        ";
+
+                List<IgdbGame> juegosDeLaApi = await manager.GetGamesAsync(query);
+
+                if (juegosDeLaApi == null)
+                {
+                    MessageBox.Show("No se pudieron cargar los juegos de la API.", "Error");
+                    return;
+                }
+
+                // Crear tarjetas
+                foreach (var juegoApi in juegosDeLaApi)
+                {
+                    var juegoTienda = juegosTienda.Find(j => j.Id == juegoApi.Id);
+                    if (juegoTienda == null) continue;
+
+                    CardVideoJuegos card = new CardVideoJuegos();
+                    card.Id = juegoApi.Id;
+                    card.Titulo = juegoApi.Name;
+                    card.Plataforma = (juegoApi.Platforms != null && juegoApi.Platforms.Any())
+                        ? string.Join(", ", juegoApi.Platforms.Select(p => p.Name))
+                        : "N/D";
+
+                    var culture = new CultureInfo("es-CO");
+                    card.Precio = $"Precio: {juegoTienda.Precio.ToString("C0", culture)}";
+                    card.PrecioVisible = true;
+                    card.Rating = juegoApi.Rating > 0 ? juegoApi.Rating.ToString("0.0") : "N/D";
+
+                    if (juegoApi.Cover != null && !string.IsNullOrEmpty(juegoApi.Cover.Url))
+                    {
+                        string url = juegoApi.Cover.Url.StartsWith("//")
+                            ? "https:" + juegoApi.Cover.Url
+                            : juegoApi.Cover.Url;
+
+                        card.Imagen = url;
+                    }
+
+                    card.Genero = $"Stock: {juegoTienda.Stock} unidades";
+                    card.EsAdmin = (UsuarioActualRol == "Admin");
+                    card.TextoBoton = "Eliminar";
+                    card.MostrarBoton = (UsuarioActualRol == "Admin");
+                    card.MostrarBotonEditar = (UsuarioActualRol == "Admin");
+
+                    flowLayoutPanelTienda.Controls.Add(card);
+                }
+
+                // Actualizar paginación (habilitar/deshabilitar botones)
+                btnAnterior.Enabled = offset > 0;
+                btnSiguiente.Enabled = juegosDeLaApi.Count == limit;
+
+                flowLayoutPanelTienda.Refresh();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al cargar la tienda filtrada: " + ex.Message, "Error");
+            }
+        }
+
+        private async Task BuscarEnTiendaAsync()
+        {
+            // Busca dentro de los IDs de la tienda usando el término de búsqueda
+            if (string.IsNullOrWhiteSpace(busquedaActual))
+            {
+                MessageBox.Show("Ingresa un nombre para buscar.");
+                return;
+            }
+
+            flowLayoutPanelTienda.Visible = true;
+            flowLayoutPanelTienda.BringToFront();
+
+            try
+            {
+                flowLayoutPanelTienda.Controls.Clear();
+                flowLayoutPanelTienda.AutoScroll = true;
+                flowLayoutPanelTienda.WrapContents = true;
+                flowLayoutPanelTienda.FlowDirection = FlowDirection.LeftToRight;
+
+                List<JuegoTienda> juegosTienda = TiendaManager.Cargar();
+                if (juegosTienda == null || juegosTienda.Count == 0)
+                {
+                    MessageBox.Show("No hay juegos en la tienda.", "Tienda vacía");
+                    return;
+                }
+
+                if (manager == null)
+                {
+                    string accessToken = await IgdbTokenManager.GetTokenAsync(clientId, clientSecret);
+                    manager = new IgdbManager(clientId, accessToken);
+                }
+
+                List<long> idsJuegos = juegosTienda.Select(j => j.Id).ToList();
+                string ids = string.Join(",", idsJuegos);
+
+                string query = $@"
+            search ""{busquedaActual}"";
+            fields id,name,rating,first_release_date,genres.name,platforms.name,cover.url;
+            where id = ({ids});
+            limit {limit};
+            offset {offset};
+        ";
+
+                List<IgdbGame> juegosDeLaApi = await manager.GetGamesAsync(query);
+
+                if (juegosDeLaApi == null)
+                {
+                    MessageBox.Show("No se encontraron resultados en la API.", "Búsqueda");
+                    return;
+                }
+
+                foreach (var juegoApi in juegosDeLaApi)
+                {
+                    var juegoTienda = juegosTienda.Find(j => j.Id == juegoApi.Id);
+                    if (juegoTienda == null) continue;
+
+                    CardVideoJuegos card = new CardVideoJuegos();
+                    card.Id = juegoApi.Id;
+                    card.Titulo = juegoApi.Name;
+                    card.Plataforma = (juegoApi.Platforms != null && juegoApi.Platforms.Any())
+                        ? string.Join(", ", juegoApi.Platforms.Select(p => p.Name))
+                        : "N/D";
+
+                    var culture = new CultureInfo("es-CO");
+                    card.Precio = $"Precio: {juegoTienda.Precio.ToString("C0", culture)}";
+                    card.PrecioVisible = true;
+                    card.Rating = juegoApi.Rating > 0 ? juegoApi.Rating.ToString("0.0") : "N/D";
+
+                    if (juegoApi.Cover != null && !string.IsNullOrEmpty(juegoApi.Cover.Url))
+                    {
+                        string url = juegoApi.Cover.Url.StartsWith("//")
+                            ? "https:" + juegoApi.Cover.Url
+                            : juegoApi.Cover.Url;
+
+                        card.Imagen = url;
+                    }
+
+                    card.Genero = $"Stock: {juegoTienda.Stock} unidades";
+                    card.EsAdmin = (UsuarioActualRol == "Admin");
+                    card.TextoBoton = "Eliminar";
+                    card.MostrarBoton = (UsuarioActualRol == "Admin");
+                    card.MostrarBotonEditar = (UsuarioActualRol == "Admin");
+
+                    flowLayoutPanelTienda.Controls.Add(card);
+                }
+
+                btnAnterior.Enabled = offset > 0;
+                btnSiguiente.Enabled = juegosDeLaApi.Count == limit;
+
+                flowLayoutPanelTienda.Refresh();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error en la búsqueda de la tienda: " + ex.Message, "Error");
             }
         }
 
