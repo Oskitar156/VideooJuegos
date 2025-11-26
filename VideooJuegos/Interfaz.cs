@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Globalization;
 
 namespace VideooJuegos
 {
@@ -93,7 +94,7 @@ namespace VideooJuegos
                     ? string.Join(", ", juego.Platforms.Select(p => p.Name))
                     : "N/D";
 
-                // ✅ EN CATÁLOGO: Mostrar GÉNERO
+                // EN CATÁLOGO: Mostrar GÉNERO
                 card.Genero = (juego.Genres != null && juego.Genres.Any())
                     ? string.Join(", ", juego.Genres.Select(g => g.Name))
                     : "N/D";
@@ -110,7 +111,10 @@ namespace VideooJuegos
                 }
 
                 card.EsAdmin = (UsuarioActualRol == "Admin");
-                card.MostrarBotonEditar = false; // ❌ NO mostrar botón editar en catálogo
+                card.MostrarBotonEditar = false; // NO mostrar botón editar en catálogo
+
+                // Ocultar el label de precio en el catálogo
+                card.PrecioVisible = false;
 
                 flowLayoutPanelCatalogo.Controls.Add(card);
             }
@@ -367,7 +371,7 @@ namespace VideooJuegos
                 flowLayoutPanelTienda.WrapContents = true;
                 flowLayoutPanelTienda.FlowDirection = FlowDirection.LeftToRight;
 
-                // ✅ CARGAR JUEGOS CON PRECIO Y STOCK
+                // CARGAR JUEGOS CON PRECIO Y STOCK
                 List<JuegoTienda> juegosTienda = TiendaManager.Cargar();
 
                 if (juegosTienda == null || juegosTienda.Count == 0)
@@ -417,8 +421,12 @@ namespace VideooJuegos
                         ? string.Join(", ", juegoApi.Platforms.Select(p => p.Name))
                         : "N/D";
 
-                    // ✅ USAR EL PRECIO DEL JSON
-                    card.Precio = $"${juegoTienda.Precio:F2}";
+                    // Formatear precio en moneda colombiana y mostrar prefijo "Precio:"
+                    var culture = new CultureInfo("es-CO");
+                    card.Precio = $"Precio: {juegoTienda.Precio.ToString("C0", culture)}";
+
+                    // Mostrar el label de precio en la vista tienda
+                    card.PrecioVisible = true;
 
                     card.Rating = juegoApi.Rating > 0 ? juegoApi.Rating.ToString("0.0") : "N/D";
 
@@ -431,20 +439,20 @@ namespace VideooJuegos
                         card.Imagen = url;
                     }
 
-                    // ✅ MOSTRAR STOCK EN LUGAR DE LA URL DE IMAGEN
-                    // Puedes usar la propiedad Genero para mostrar el stock (ya que no se usa en tienda)
+                    // Usar la propiedad Genero para mostrar el stock
                     card.Genero = $"Stock: {juegoTienda.Stock} unidades";
 
+                    // Visibilidad y textos de botones según rol
                     card.EsAdmin = (UsuarioActualRol == "Admin");
 
-                    if (UsuarioActualRol == "Admin")
-                    {
-                        card.MostrarBotonEditar = true;
-                    }
-                    else
-                    {
-                        card.MostrarBotonEditar = false;
-                    }
+                    // Asegurar que el botón de acción (btnCard) muestre "Eliminar" en la vista tienda
+                    card.TextoBoton = "Eliminar";
+
+                    // Mostrar/ocultar el botón de acción según rol (solo admin puede eliminar)
+                    card.MostrarBoton = (UsuarioActualRol == "Admin");
+
+                    // Mostrar/ocultar botón editar según rol (solo admin puede editar)
+                    card.MostrarBotonEditar = (UsuarioActualRol == "Admin");
 
                     flowLayoutPanelTienda.Controls.Add(card);
                 }

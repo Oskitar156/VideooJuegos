@@ -92,8 +92,8 @@ namespace VideooJuegos
                 ventana.UsuarioActualEmail = userFound.Email;
                 ventana.UsuarioActualRol = userFound.Rol;
 
-                ventana.Show();
-                this.Hide();
+                ventana.ShowDialog();
+                this.Close();
             }
             else
             {
