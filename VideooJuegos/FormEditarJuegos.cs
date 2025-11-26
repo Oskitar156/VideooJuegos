@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
+using System.Globalization;
 
 namespace VideooJuegos
 {
@@ -160,29 +161,43 @@ namespace VideooJuegos
             txtTitulo.Text = _card.Titulo;
             txtPlataforma.Text = _card.Plataforma;
 
-            // Cargar el precio actual
-            string precioTexto = _card.Precio;
-            if (precioTexto.StartsWith("$"))
+            // Intentar leer precio y stock directamente desde tienda.json
+            var juegoTienda = TiendaManager.ObtenerJuego(_card.Id);
+            if (juegoTienda != null)
             {
-                precioTexto = precioTexto.Replace("$", "").Trim();
+                // Mostrar solo el número en la caja de texto (permitir edición)
+                txtPrecio.Text = juegoTienda.Precio.ToString("0.##", CultureInfo.CurrentCulture);
+                txtStock.Text = juegoTienda.Stock.ToString(CultureInfo.CurrentCulture);
             }
-            txtPrecio.Text = precioTexto;
+            else
+            {
+                // Fallback: extraer desde la card si no existe en JSON
+                string precioTexto = _card.Precio ?? "";
+                // Quitar prefijos como "Precio:" y símbolos
+                if (precioTexto.StartsWith("Precio:", StringComparison.OrdinalIgnoreCase))
+                    precioTexto = precioTexto.Replace("Precio:", "").Trim();
+
+                if (precioTexto.StartsWith("$"))
+                    precioTexto = precioTexto.Replace("$", "").Trim();
+
+                txtPrecio.Text = precioTexto;
+
+                // Extraer stock desde Genero si viene en el formato "Stock: X unidades"
+                string stockTexto = _card.Genero ?? "";
+                if (stockTexto.StartsWith("Stock:", StringComparison.OrdinalIgnoreCase))
+                {
+                    stockTexto = stockTexto.Replace("Stock:", "").Replace("unidades", "").Trim();
+                }
+                txtStock.Text = stockTexto;
+            }
 
             // Extraer solo el número del rating
-            string ratingTexto = _card.Rating;
-            if (ratingTexto.StartsWith("Rating: "))
+            string ratingTexto = _card.Rating ?? "";
+            if (ratingTexto.StartsWith("Rating:", StringComparison.OrdinalIgnoreCase))
             {
-                ratingTexto = ratingTexto.Replace("Rating: ", "").Replace("$", "").Trim();
+                ratingTexto = ratingTexto.Replace("Rating:", "").Trim();
             }
             txtRating.Text = ratingTexto;
-
-            // ✅ NUEVO: Cargar stock desde Genero
-            string stockTexto = _card.Genero ?? "";
-            if (stockTexto.StartsWith("Stock: "))
-            {
-                stockTexto = stockTexto.Replace("Stock: ", "").Replace(" unidades", "").Trim();
-            }
-            txtStock.Text = stockTexto;
         }
 
         private void BtnGuardar_Click(object sender, EventArgs e)
@@ -197,7 +212,7 @@ namespace VideooJuegos
             // Validar que el precio sea un número válido
             if (!string.IsNullOrWhiteSpace(txtPrecio.Text))
             {
-                if (!decimal.TryParse(txtPrecio.Text, out decimal precio) || precio < 0)
+                if (!decimal.TryParse(txtPrecio.Text, NumberStyles.Any, CultureInfo.CurrentCulture, out decimal precio) || precio < 0)
                 {
                     MessageBox.Show("El precio debe ser un número válido mayor o igual a 0.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
@@ -207,7 +222,7 @@ namespace VideooJuegos
             // ✅ NUEVO: Validar stock
             if (!string.IsNullOrWhiteSpace(txtStock.Text))
             {
-                if (!int.TryParse(txtStock.Text, out int stock) || stock < 0)
+                if (!int.TryParse(txtStock.Text, NumberStyles.Integer, CultureInfo.CurrentCulture, out int stock) || stock < 0)
                 {
                     MessageBox.Show("El stock debe ser un número entero mayor o igual a 0.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
@@ -217,7 +232,7 @@ namespace VideooJuegos
             // Validar que el rating sea un número válido
             if (!string.IsNullOrWhiteSpace(txtRating.Text))
             {
-                if (!double.TryParse(txtRating.Text, out double rating) || rating < 0 || rating > 100)
+                if (!double.TryParse(txtRating.Text, NumberStyles.Any, CultureInfo.CurrentCulture, out double rating) || rating < 0 || rating > 100)
                 {
                     MessageBox.Show("El rating debe ser un número entre 0 y 100.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
@@ -228,24 +243,36 @@ namespace VideooJuegos
             _card.Titulo = txtTitulo.Text.Trim();
             _card.Plataforma = txtPlataforma.Text.Trim();
 
-            // Formatear el precio con símbolo $
+            decimal? precioNullable = null;
+            int? stockNullable = null;
+
+            // Formatear el precio en COP con prefijo "Precio:" en la card y guardar numérico en JSON
             if (!string.IsNullOrWhiteSpace(txtPrecio.Text))
             {
-                decimal.TryParse(txtPrecio.Text, out decimal precio);
-                _card.Precio = $"${precio:F2}";
+                decimal.TryParse(txtPrecio.Text, NumberStyles.Any, CultureInfo.CurrentCulture, out decimal precio);
+                precioNullable = precio;
+
+                var culture = new CultureInfo("es-CO");
+                _card.Precio = $"Precio: {precio.ToString("C0", culture)}";
+
+                // Asegurar que el label de precio sea visible en la card
+                _card.PrecioVisible = true;
             }
 
             _card.Rating = txtRating.Text.Trim();
 
-            // ✅ NUEVO: Guardar stock
+            // ✅ NUEVO: Guardar stock y actualizar propiedad Genero de la card
             if (!string.IsNullOrWhiteSpace(txtStock.Text))
             {
-                int.TryParse(txtStock.Text, out int stock);
+                int.TryParse(txtStock.Text, NumberStyles.Integer, CultureInfo.CurrentCulture, out int stock);
+                stockNullable = stock;
                 _card.Genero = $"Stock: {stock} unidades";
+            }
 
-                // Actualizar en el JSON
-                decimal.TryParse(txtPrecio.Text, out decimal precio);
-                TiendaManager.ActualizarJuego(_card.Id, precio, stock);
+            // Actualizar JSON (si hay cambios)
+            if (precioNullable.HasValue || stockNullable.HasValue)
+            {
+                TiendaManager.ActualizarJuego(_card.Id, precioNullable, stockNullable);
             }
 
             this.DialogResult = DialogResult.OK;

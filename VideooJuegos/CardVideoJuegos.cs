@@ -14,6 +14,7 @@ namespace VideooJuegos
         private Label label2;
         private Label label3;
         private Label label4;
+        private Label labelPrecio;
         private Button btnCard;
         private Button btnEditar;
         private Label label1;
@@ -76,11 +77,18 @@ namespace VideooJuegos
             set { label3.Text = value; }
         }
 
-        // Propiedad para Precio (en tienda)
+        // Propiedad para Precio (en tienda) -> usa labelPrecio dedicado
         public string Precio
         {
-            get { return label3.Text; }
-            set { label3.Text = value; }
+            get { return labelPrecio.Text; }
+            set { labelPrecio.Text = value; }
+        }
+
+        // Nueva propiedad para controlar la visibilidad del label de precio
+        public bool PrecioVisible
+        {
+            get { return labelPrecio.Visible; }
+            set { labelPrecio.Visible = value; }
         }
 
         public string Rating
@@ -101,6 +109,7 @@ namespace VideooJuegos
         {
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
+            this.labelPrecio = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
@@ -131,12 +140,24 @@ namespace VideooJuegos
             this.label2.TabIndex = 1;
             this.label2.Text = "Plataforma";
             // 
-            // label3 (DUAL: Género en catálogo / Precio en tienda)
+            // labelPrecio
+            // 
+            this.labelPrecio.BackColor = System.Drawing.Color.Transparent;
+            this.labelPrecio.Font = new System.Drawing.Font("Cooper Black", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelPrecio.ForeColor = System.Drawing.Color.LimeGreen;
+            this.labelPrecio.Location = new System.Drawing.Point(23, 323);
+            this.labelPrecio.Name = "labelPrecio";
+            this.labelPrecio.Size = new System.Drawing.Size(210, 21);
+            this.labelPrecio.TabIndex = 1;
+            this.labelPrecio.Text = "Precio";
+            this.labelPrecio.Visible = true;
+            // 
+            // label3
             // 
             this.label3.BackColor = System.Drawing.Color.Transparent;
             this.label3.Font = new System.Drawing.Font("Cooper Black", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label3.ForeColor = System.Drawing.SystemColors.ControlLight;
-            this.label3.Location = new System.Drawing.Point(23, 323);
+            this.label3.Location = new System.Drawing.Point(23, 348);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(210, 21);
             this.label3.TabIndex = 1;
@@ -147,7 +168,7 @@ namespace VideooJuegos
             this.label4.BackColor = System.Drawing.Color.Transparent;
             this.label4.Font = new System.Drawing.Font("Cooper Black", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label4.ForeColor = System.Drawing.SystemColors.ControlLight;
-            this.label4.Location = new System.Drawing.Point(23, 353);
+            this.label4.Location = new System.Drawing.Point(23, 378);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(210, 21);
             this.label4.TabIndex = 1;
@@ -165,35 +186,35 @@ namespace VideooJuegos
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
             // 
-            // btnEditar (A LA IZQUIERDA - SOLO EN TIENDA)
+            // btnCard
+            // 
+            this.btnCard.AutoSize = true;
+            this.btnCard.BackColor = System.Drawing.Color.YellowGreen;
+            this.btnCard.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btnCard.Font = new System.Drawing.Font("Cooper Black", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnCard.Location = new System.Drawing.Point(138, 410);
+            this.btnCard.Name = "btnCard";
+            this.btnCard.Size = new System.Drawing.Size(99, 33);
+            this.btnCard.TabIndex = 2;
+            this.btnCard.Text = "Agregar";
+            this.btnCard.UseVisualStyleBackColor = false;
+            this.btnCard.Click += new System.EventHandler(this.btnCard_Click);
+            // 
+            // btnEditar
             // 
             this.btnEditar.AutoSize = true;
             this.btnEditar.BackColor = System.Drawing.Color.DodgerBlue;
             this.btnEditar.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnEditar.Font = new System.Drawing.Font("Cooper Black", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnEditar.ForeColor = System.Drawing.Color.White;
-            this.btnEditar.Location = new System.Drawing.Point(27, 390);
+            this.btnEditar.Location = new System.Drawing.Point(27, 410);
             this.btnEditar.Name = "btnEditar";
             this.btnEditar.Size = new System.Drawing.Size(95, 33);
             this.btnEditar.TabIndex = 3;
             this.btnEditar.Text = "Editar";
             this.btnEditar.UseVisualStyleBackColor = false;
-            this.btnEditar.Visible = false; // Oculto por defecto
+            this.btnEditar.Visible = false;
             this.btnEditar.Click += new System.EventHandler(this.btnEditar_Click);
-            // 
-            // btnCard (ELIMINAR/AGREGAR - A LA DERECHA)
-            // 
-            this.btnCard.AutoSize = true;
-            this.btnCard.BackColor = System.Drawing.Color.YellowGreen;
-            this.btnCard.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.btnCard.Font = new System.Drawing.Font("Cooper Black", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnCard.Location = new System.Drawing.Point(138, 390);
-            this.btnCard.Name = "btnCard";
-            this.btnCard.Size = new System.Drawing.Size(95, 33);
-            this.btnCard.TabIndex = 2;
-            this.btnCard.Text = "Agregar";
-            this.btnCard.UseVisualStyleBackColor = false;
-            this.btnCard.Click += new System.EventHandler(this.btnCard_Click);
             // 
             // CardVideoJuegos
             // 
@@ -203,16 +224,18 @@ namespace VideooJuegos
             this.Controls.Add(this.btnCard);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
+            this.Controls.Add(this.labelPrecio);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.pictureBox1);
             this.DoubleBuffered = true;
             this.Name = "CardVideoJuegos";
-            this.Size = new System.Drawing.Size(275, 450);
+            this.Size = new System.Drawing.Size(275, 470);
             this.Load += new System.EventHandler(this.CardVideoJuegos_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
+
         }
 
         private void btnEditar_Click(object sender, EventArgs e)
