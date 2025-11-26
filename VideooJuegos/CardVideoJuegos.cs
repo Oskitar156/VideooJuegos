@@ -123,9 +123,9 @@ namespace VideooJuegos
             this.label1.BackColor = System.Drawing.Color.Transparent;
             this.label1.Font = new System.Drawing.Font("Cooper Black", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.SystemColors.ControlLight;
-            this.label1.Location = new System.Drawing.Point(23, 245);
+            this.label1.Location = new System.Drawing.Point(26, 276);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(210, 21);
+            this.label1.Size = new System.Drawing.Size(248, 54);
             this.label1.TabIndex = 1;
             this.label1.Text = "Titulo";
             // 
@@ -134,9 +134,9 @@ namespace VideooJuegos
             this.label2.BackColor = System.Drawing.Color.Transparent;
             this.label2.Font = new System.Drawing.Font("Cooper Black", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.ForeColor = System.Drawing.SystemColors.ControlLight;
-            this.label2.Location = new System.Drawing.Point(23, 279);
+            this.label2.Location = new System.Drawing.Point(26, 330);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(210, 44);
+            this.label2.Size = new System.Drawing.Size(248, 44);
             this.label2.TabIndex = 1;
             this.label2.Text = "Plataforma";
             // 
@@ -145,32 +145,31 @@ namespace VideooJuegos
             this.labelPrecio.BackColor = System.Drawing.Color.Transparent;
             this.labelPrecio.Font = new System.Drawing.Font("Cooper Black", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelPrecio.ForeColor = System.Drawing.Color.LimeGreen;
-            this.labelPrecio.Location = new System.Drawing.Point(23, 323);
+            this.labelPrecio.Location = new System.Drawing.Point(27, 374);
             this.labelPrecio.Name = "labelPrecio";
-            this.labelPrecio.Size = new System.Drawing.Size(210, 21);
+            this.labelPrecio.Size = new System.Drawing.Size(247, 21);
             this.labelPrecio.TabIndex = 1;
             this.labelPrecio.Text = "Precio";
-            this.labelPrecio.Visible = true;
             // 
             // label3
             // 
             this.label3.BackColor = System.Drawing.Color.Transparent;
             this.label3.Font = new System.Drawing.Font("Cooper Black", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label3.ForeColor = System.Drawing.SystemColors.ControlLight;
-            this.label3.Location = new System.Drawing.Point(23, 348);
+            this.label3.Location = new System.Drawing.Point(27, 401);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(210, 21);
+            this.label3.Size = new System.Drawing.Size(247, 21);
             this.label3.TabIndex = 1;
-            this.label3.Text = "Info";
+            this.label3.Text = "Stock";
             // 
             // label4
             // 
             this.label4.BackColor = System.Drawing.Color.Transparent;
             this.label4.Font = new System.Drawing.Font("Cooper Black", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label4.ForeColor = System.Drawing.SystemColors.ControlLight;
-            this.label4.Location = new System.Drawing.Point(23, 378);
+            this.label4.Location = new System.Drawing.Point(27, 429);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(210, 21);
+            this.label4.Size = new System.Drawing.Size(247, 21);
             this.label4.TabIndex = 1;
             this.label4.Text = "Rating";
             // 
@@ -179,9 +178,9 @@ namespace VideooJuegos
             this.pictureBox1.BackColor = System.Drawing.Color.Transparent;
             this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.pictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pictureBox1.Location = new System.Drawing.Point(27, 26);
+            this.pictureBox1.Location = new System.Drawing.Point(27, 23);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(206, 206);
+            this.pictureBox1.Size = new System.Drawing.Size(247, 243);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
@@ -192,7 +191,7 @@ namespace VideooJuegos
             this.btnCard.BackColor = System.Drawing.Color.YellowGreen;
             this.btnCard.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnCard.Font = new System.Drawing.Font("Cooper Black", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnCard.Location = new System.Drawing.Point(138, 410);
+            this.btnCard.Location = new System.Drawing.Point(153, 463);
             this.btnCard.Name = "btnCard";
             this.btnCard.Size = new System.Drawing.Size(99, 33);
             this.btnCard.TabIndex = 2;
@@ -207,7 +206,7 @@ namespace VideooJuegos
             this.btnEditar.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnEditar.Font = new System.Drawing.Font("Cooper Black", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnEditar.ForeColor = System.Drawing.Color.White;
-            this.btnEditar.Location = new System.Drawing.Point(27, 410);
+            this.btnEditar.Location = new System.Drawing.Point(42, 463);
             this.btnEditar.Name = "btnEditar";
             this.btnEditar.Size = new System.Drawing.Size(95, 33);
             this.btnEditar.TabIndex = 3;
@@ -230,7 +229,7 @@ namespace VideooJuegos
             this.Controls.Add(this.pictureBox1);
             this.DoubleBuffered = true;
             this.Name = "CardVideoJuegos";
-            this.Size = new System.Drawing.Size(275, 470);
+            this.Size = new System.Drawing.Size(300, 522);
             this.Load += new System.EventHandler(this.CardVideoJuegos_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
@@ -308,6 +307,16 @@ namespace VideooJuegos
         }
 
         private void CardVideoJuegos_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void labelPrecio_Click(object sender, EventArgs e)
         {
 
         }
