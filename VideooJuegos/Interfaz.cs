@@ -55,6 +55,7 @@ namespace VideooJuegos
             txtBuscar.KeyDown += TxtBuscar_KeyDown;
         }
 
+        // Obtiene token y carga juegos iniciales
         private async Task InicializarInterfazAsync()
         {
             try
@@ -120,7 +121,7 @@ namespace VideooJuegos
                 card.CentrarBoton();
             }
         }
-
+        // Renderiza estilos del menú principal
         public class MyMenuRenderer : ToolStripProfessionalRenderer
         {
             protected override void OnRenderMenuItemBackground(ToolStripItemRenderEventArgs e)
@@ -153,7 +154,7 @@ namespace VideooJuegos
             flowLayoutPanelTienda.Visible = false;
             flowLayoutFavoritos.Visible = false;
         }
-
+        // Muestra vista del catálogo de juegos
         private void cATÁLOGOToolStripMenuItem_Click_1(object sender, EventArgs e)
         {
             flowLayoutPanelTienda.Visible = false;
@@ -164,10 +165,11 @@ namespace VideooJuegos
 
             btnAnterior.Visible = true;
             btnSiguiente.Visible = true;
+            comboFiltro.Visible = true;
 
             flowLayoutPanelCatalogo.Refresh();
         }
-
+        // Muestra vista de la tienda
         private async void tIENDAToolStripMenuItem_Click(object sender, EventArgs e)
         {
             flowLayoutPanelCatalogo.Visible = false;
@@ -188,7 +190,7 @@ namespace VideooJuegos
                 item.ForeColor = hoverFore;
             }
         }
-
+        // Cambia color al pasar mouse
         private void MenuItem_MouseLeave(object sender, EventArgs e)
         {
             if (sender is ToolStripMenuItem item)
@@ -302,7 +304,7 @@ namespace VideooJuegos
             btnAnterior.Enabled = offset > 0;
             btnSiguiente.Enabled = juegos.Count == limit;
         }
-
+        // Genera query según filtro seleccionado
         private string GenerarQueryFiltro(string filtro, int limit, int offset)
         {
             switch (filtro)
@@ -377,7 +379,7 @@ namespace VideooJuegos
             else
                 await CargarPaginaBusquedaAsync();
         }
-
+        // Carga tienda con filtro aplicado
         private async Task CargarPaginaBusquedaAsync()
         {
             if (manager == null)
