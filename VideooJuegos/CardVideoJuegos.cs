@@ -230,7 +230,6 @@ namespace VideooJuegos
             this.DoubleBuffered = true;
             this.Name = "CardVideoJuegos";
             this.Size = new System.Drawing.Size(300, 522);
-            this.Load += new System.EventHandler(this.CardVideoJuegos_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -306,19 +305,16 @@ namespace VideooJuegos
             }
         }
 
-        private void CardVideoJuegos_Load(object sender, EventArgs e)
+        public void CentrarBoton()
         {
-
+            int centroX = (this.Width - btnCard.Width) / 2;
+            btnCard.Location = new System.Drawing.Point(centroX, btnCard.Location.Y);
+            btnEditar.Visible = false;
         }
 
-        private void label1_Click(object sender, EventArgs e)
+        public void PosicionarBotonNormal()
         {
-
-        }
-
-        private void labelPrecio_Click(object sender, EventArgs e)
-        {
-
+            btnCard.Location = new System.Drawing.Point(153, btnCard.Location.Y);
         }
     }
 }

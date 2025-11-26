@@ -75,6 +75,7 @@
             this.txtContraseñaLogin.Name = "txtContraseñaLogin";
             this.txtContraseñaLogin.Size = new System.Drawing.Size(172, 22);
             this.txtContraseñaLogin.TabIndex = 2;
+            this.txtContraseñaLogin.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtContraseñaLogin_KeyDown);
             // 
             // buttonLogin
             // 
@@ -143,7 +144,6 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
             this.Text = "Inicio de sesión";
-            this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

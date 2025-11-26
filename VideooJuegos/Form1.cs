@@ -85,15 +85,14 @@ namespace VideooJuegos
             {
                 MessageBox.Show($"Bienvenido {userFound.Nombres}", "Inicio exitoso");
 
-                // Abrir ventana principal
                 Interfaz ventana = new Interfaz();
-
-                // PASAR EMAIL Y ROL
                 ventana.UsuarioActualEmail = userFound.Email;
                 ventana.UsuarioActualRol = userFound.Rol;
 
-                ventana.ShowDialog();
-                this.Close();
+                ventana.FormClosed += (s, args) => Application.Exit();
+
+                ventana.Show();
+                this.Hide();
             }
             else
             {
@@ -101,9 +100,15 @@ namespace VideooJuegos
             }
         }
 
-        private void Form1_Load(object sender, EventArgs e)
-        {
 
+        private void txtContraseñaLogin_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                e.Handled = true;
+                e.SuppressKeyPress = true;
+                button1_Click(sender, e);
+            }
         }
     }
 }
