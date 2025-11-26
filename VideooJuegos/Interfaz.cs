@@ -117,6 +117,7 @@ namespace VideooJuegos
                 card.PrecioVisible = false;
 
                 flowLayoutPanelCatalogo.Controls.Add(card);
+                card.CentrarBoton();
             }
         }
 
@@ -262,10 +263,27 @@ namespace VideooJuegos
             filtroActual = comboFiltro.SelectedItem.ToString();
             offset = 0;
 
-            if (flowLayoutPanelTienda.Visible)
-                await CargarTiendaFiltradaAsync();
+            // Verificar si hay texto de búsqueda
+            string textoBusqueda = txtBuscar.Text.Trim();
+
+            if (!string.IsNullOrWhiteSpace(textoBusqueda))
+            {
+                // Si hay texto, aplicar búsqueda con filtro
+                busquedaActual = textoBusqueda;
+
+                if (flowLayoutPanelTienda.Visible)
+                    await BuscarEnTiendaAsync();
+                else
+                    await CargarPaginaBusquedaAsync();
+            }
             else
-                await AplicarFiltroAsync();
+            {
+                // Si no hay texto, aplicar solo el filtro
+                if (flowLayoutPanelTienda.Visible)
+                    await CargarTiendaFiltradaAsync();
+                else
+                    await AplicarFiltroAsync();
+            }
         }
 
         private async Task AplicarFiltroAsync()
@@ -709,9 +727,22 @@ namespace VideooJuegos
             }
         }
 
-        private void flowLayoutFavoritos_Paint(object sender, PaintEventArgs e)
+        private async void txtBuscar_TextChanged(object sender, EventArgs e)
         {
+            string textoBusqueda = txtBuscar.Text.Trim();
 
+            // Solo actuar cuando se borra todo el texto
+            if (string.IsNullOrWhiteSpace(textoBusqueda) && !string.IsNullOrWhiteSpace(busquedaActual))
+            {
+                // Si borra el texto, volver a mostrar todo con el filtro actual
+                offset = 0;
+                busquedaActual = "";
+
+                if (flowLayoutPanelTienda.Visible)
+                    await CargarTiendaFiltradaAsync();
+                else
+                    await AplicarFiltroAsync();
+            }
         }
     }
 }

@@ -14,18 +14,11 @@ namespace VideooJuegos
         {
             new Usuarios
             {
-                Nombres = "Oscar",
-                Email = "oscar123@gmail.com",
-                Password = "123456",
+                Nombres = "Administrador",
+                Email = "admin@sistema.com",
+                Password = "admin123",
                 Rol = "Admin"
             },
-            new Usuarios
-            {
-                Nombres = "Brayan",
-                Email = "brayan123@gmail.com",
-                Password = "123456",
-                Rol = "Admin"
-            }
         };
 
         // Crea los admins por defecto si no existen en el JSON

@@ -24,79 +24,100 @@ namespace VideooJuegos
 
         private void InitializeComponent()
         {
-            this.lblTitulo = new Label();
-            this.lblPrecio = new Label();
-            this.txtPrecio = new TextBox();
-            this.lblStock = new Label();
-            this.txtStock = new TextBox();
-            this.btnAceptar = new Button();
-            this.btnCancelar = new Button();
-
+            this.lblTitulo = new System.Windows.Forms.Label();
+            this.lblPrecio = new System.Windows.Forms.Label();
+            this.txtPrecio = new System.Windows.Forms.TextBox();
+            this.lblStock = new System.Windows.Forms.Label();
+            this.txtStock = new System.Windows.Forms.TextBox();
+            this.btnAceptar = new System.Windows.Forms.Button();
+            this.btnCancelar = new System.Windows.Forms.Button();
             this.SuspendLayout();
-
-            // Form
-            this.Text = "Agregar a Tienda";
-            this.Size = new Size(400, 280);
-            this.StartPosition = FormStartPosition.CenterParent;
-            this.FormBorderStyle = FormBorderStyle.FixedDialog;
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
-            this.BackColor = Color.FromArgb(45, 45, 48);
-
+            // 
             // lblTitulo
-            this.lblTitulo.Text = "Ingresa el precio y stock del juego:";
-            this.lblTitulo.Location = new Point(30, 20);
-            this.lblTitulo.Size = new Size(340, 30);
-            this.lblTitulo.ForeColor = Color.White;
-            this.lblTitulo.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
-
+            // 
+            this.lblTitulo.Font = new System.Drawing.Font("Cooper Black", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTitulo.ForeColor = System.Drawing.Color.White;
+            this.lblTitulo.Location = new System.Drawing.Point(23, 24);
+            this.lblTitulo.Name = "lblTitulo";
+            this.lblTitulo.Size = new System.Drawing.Size(340, 56);
+            this.lblTitulo.TabIndex = 0;
+            this.lblTitulo.Text = "Ingresa el precio y stock del juego";
+            this.lblTitulo.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // lblPrecio
+            // 
+            this.lblPrecio.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.lblPrecio.ForeColor = System.Drawing.Color.LimeGreen;
+            this.lblPrecio.Location = new System.Drawing.Point(28, 84);
+            this.lblPrecio.Name = "lblPrecio";
+            this.lblPrecio.Size = new System.Drawing.Size(100, 20);
+            this.lblPrecio.TabIndex = 1;
             this.lblPrecio.Text = "Precio ($):";
-            this.lblPrecio.Location = new Point(30, 70);
-            this.lblPrecio.Size = new Size(100, 20);
-            this.lblPrecio.ForeColor = Color.LimeGreen;
-            this.lblPrecio.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
-
+            // 
             // txtPrecio
-            this.txtPrecio.Location = new Point(30, 95);
-            this.txtPrecio.Size = new Size(330, 25);
-            this.txtPrecio.Font = new Font("Segoe UI", 10F);
-            this.txtPrecio.Text = "19.99";
-
+            // 
+            this.txtPrecio.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.txtPrecio.Location = new System.Drawing.Point(28, 109);
+            this.txtPrecio.Name = "txtPrecio";
+            this.txtPrecio.Size = new System.Drawing.Size(330, 30);
+            this.txtPrecio.TabIndex = 2;
+            // 
             // lblStock
+            // 
+            this.lblStock.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.lblStock.ForeColor = System.Drawing.Color.Yellow;
+            this.lblStock.Location = new System.Drawing.Point(28, 144);
+            this.lblStock.Name = "lblStock";
+            this.lblStock.Size = new System.Drawing.Size(150, 20);
+            this.lblStock.TabIndex = 3;
             this.lblStock.Text = "Stock (unidades):";
-            this.lblStock.Location = new Point(30, 130);
-            this.lblStock.Size = new Size(150, 20);
-            this.lblStock.ForeColor = Color.Yellow;
-            this.lblStock.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
-
+            // 
             // txtStock
-            this.txtStock.Location = new Point(30, 155);
-            this.txtStock.Size = new Size(330, 25);
-            this.txtStock.Font = new Font("Segoe UI", 10F);
-            this.txtStock.Text = "10";
-
+            // 
+            this.txtStock.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.txtStock.Location = new System.Drawing.Point(28, 169);
+            this.txtStock.Name = "txtStock";
+            this.txtStock.Size = new System.Drawing.Size(330, 30);
+            this.txtStock.TabIndex = 4;
+            // 
             // btnAceptar
+            // 
+            this.btnAceptar.BackColor = System.Drawing.Color.Green;
+            this.btnAceptar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnAceptar.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.btnAceptar.ForeColor = System.Drawing.Color.White;
+            this.btnAceptar.Location = new System.Drawing.Point(92, 214);
+            this.btnAceptar.Name = "btnAceptar";
+            this.btnAceptar.Size = new System.Drawing.Size(90, 35);
+            this.btnAceptar.TabIndex = 5;
             this.btnAceptar.Text = "Aceptar";
-            this.btnAceptar.Location = new Point(170, 200);
-            this.btnAceptar.Size = new Size(90, 35);
-            this.btnAceptar.BackColor = Color.Green;
-            this.btnAceptar.ForeColor = Color.White;
-            this.btnAceptar.FlatStyle = FlatStyle.Flat;
-            this.btnAceptar.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
-            this.btnAceptar.Click += BtnAceptar_Click;
-
+            this.btnAceptar.UseVisualStyleBackColor = false;
+            // Conectar evento y DialogResult
+            this.btnAceptar.Click += new System.EventHandler(this.BtnAceptar_Click);
+            this.btnAceptar.DialogResult = System.Windows.Forms.DialogResult.OK;
+            // 
             // btnCancelar
+            // 
+            this.btnCancelar.BackColor = System.Drawing.Color.Gray;
+            this.btnCancelar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnCancelar.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.btnCancelar.ForeColor = System.Drawing.Color.White;
+            this.btnCancelar.Location = new System.Drawing.Point(192, 214);
+            this.btnCancelar.Name = "btnCancelar";
+            this.btnCancelar.Size = new System.Drawing.Size(90, 35);
+            this.btnCancelar.TabIndex = 6;
             this.btnCancelar.Text = "Cancelar";
-            this.btnCancelar.Location = new Point(270, 200);
-            this.btnCancelar.Size = new Size(90, 35);
-            this.btnCancelar.BackColor = Color.Gray;
-            this.btnCancelar.ForeColor = Color.White;
-            this.btnCancelar.FlatStyle = FlatStyle.Flat;
-            this.btnCancelar.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
-            this.btnCancelar.Click += BtnCancelar_Click;
-
-            // Agregar controles al formulario
+            this.btnCancelar.UseVisualStyleBackColor = false;
+            // Conectar evento y DialogResult
+            this.btnCancelar.Click += new System.EventHandler(this.BtnCancelar_Click);
+            this.btnCancelar.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            // 
+            // FormAgregarATienda
+            // 
+            this.AcceptButton = this.btnAceptar;
+            this.CancelButton = this.btnCancelar;
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
+            this.ClientSize = new System.Drawing.Size(382, 271);
             this.Controls.Add(this.lblTitulo);
             this.Controls.Add(this.lblPrecio);
             this.Controls.Add(this.txtPrecio);
@@ -104,9 +125,15 @@ namespace VideooJuegos
             this.Controls.Add(this.txtStock);
             this.Controls.Add(this.btnAceptar);
             this.Controls.Add(this.btnCancelar);
-
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
+            this.Name = "FormAgregarATienda";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            this.Text = "Agregar a Tienda";
             this.ResumeLayout(false);
             this.PerformLayout();
+
         }
 
         private void BtnAceptar_Click(object sender, EventArgs e)
@@ -141,6 +168,11 @@ namespace VideooJuegos
         {
             this.DialogResult = DialogResult.Cancel;
             this.Close();
+        }
+
+        private void lblTitulo_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

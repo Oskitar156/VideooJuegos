@@ -50,7 +50,7 @@
             this.flowLayoutPanelCatalogo.Location = new System.Drawing.Point(0, 39);
             this.flowLayoutPanelCatalogo.Margin = new System.Windows.Forms.Padding(4);
             this.flowLayoutPanelCatalogo.Name = "flowLayoutPanelCatalogo";
-            this.flowLayoutPanelCatalogo.Size = new System.Drawing.Size(1348, 556);
+            this.flowLayoutPanelCatalogo.Size = new System.Drawing.Size(1355, 556);
             this.flowLayoutPanelCatalogo.TabIndex = 1;
             // 
             // flowLayoutPanelTienda
@@ -59,7 +59,7 @@
             this.flowLayoutPanelTienda.Location = new System.Drawing.Point(0, 39);
             this.flowLayoutPanelTienda.Margin = new System.Windows.Forms.Padding(4);
             this.flowLayoutPanelTienda.Name = "flowLayoutPanelTienda";
-            this.flowLayoutPanelTienda.Size = new System.Drawing.Size(1348, 556);
+            this.flowLayoutPanelTienda.Size = new System.Drawing.Size(1355, 556);
             this.flowLayoutPanelTienda.TabIndex = 0;
             // 
             // menuStrip1
@@ -71,7 +71,7 @@
             this.tIENDAToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1348, 39);
+            this.menuStrip1.Size = new System.Drawing.Size(1355, 39);
             this.menuStrip1.TabIndex = 2;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -102,7 +102,7 @@
             this.btnAnterior.Margin = new System.Windows.Forms.Padding(4);
             this.btnAnterior.Name = "btnAnterior";
             this.btnAnterior.Size = new System.Drawing.Size(75, 39);
-            this.btnAnterior.TabIndex = 3;
+            this.btnAnterior.TabIndex = 1;
             this.btnAnterior.Text = "◀";
             this.btnAnterior.UseVisualStyleBackColor = true;
             this.btnAnterior.Click += new System.EventHandler(this.btnAnterior_Click);
@@ -114,7 +114,7 @@
             this.btnSiguiente.Margin = new System.Windows.Forms.Padding(4);
             this.btnSiguiente.Name = "btnSiguiente";
             this.btnSiguiente.Size = new System.Drawing.Size(75, 39);
-            this.btnSiguiente.TabIndex = 3;
+            this.btnSiguiente.TabIndex = 2;
             this.btnSiguiente.Text = "▶";
             this.btnSiguiente.UseVisualStyleBackColor = true;
             this.btnSiguiente.Click += new System.EventHandler(this.btnSiguiente_Click);
@@ -124,38 +124,40 @@
             this.flowLayoutFavoritos.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flowLayoutFavoritos.Location = new System.Drawing.Point(0, 39);
             this.flowLayoutFavoritos.Name = "flowLayoutFavoritos";
-            this.flowLayoutFavoritos.Size = new System.Drawing.Size(1348, 556);
+            this.flowLayoutFavoritos.Size = new System.Drawing.Size(1355, 556);
             this.flowLayoutFavoritos.TabIndex = 4;
-            this.flowLayoutFavoritos.Paint += new System.Windows.Forms.PaintEventHandler(this.flowLayoutFavoritos_Paint);
             // 
             // comboFiltro
             // 
             this.comboFiltro.BackColor = System.Drawing.Color.Black;
             this.comboFiltro.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.comboFiltro.Font = new System.Drawing.Font("Cooper Black", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.comboFiltro.Font = new System.Drawing.Font("Cooper Black", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.comboFiltro.ForeColor = System.Drawing.Color.White;
             this.comboFiltro.FormattingEnabled = true;
-            this.comboFiltro.Location = new System.Drawing.Point(1194, 12);
+            this.comboFiltro.Location = new System.Drawing.Point(1174, 3);
             this.comboFiltro.Name = "comboFiltro";
-            this.comboFiltro.Size = new System.Drawing.Size(121, 23);
-            this.comboFiltro.TabIndex = 4;
+            this.comboFiltro.Size = new System.Drawing.Size(154, 31);
+            this.comboFiltro.TabIndex = 5;
             // 
             // txtBuscar
             // 
             this.txtBuscar.BackColor = System.Drawing.SystemColors.InactiveCaptionText;
-            this.txtBuscar.Font = new System.Drawing.Font("Cooper Black", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtBuscar.Font = new System.Drawing.Font("Cooper Black", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtBuscar.ForeColor = System.Drawing.Color.White;
-            this.txtBuscar.Location = new System.Drawing.Point(779, 12);
+            this.txtBuscar.Location = new System.Drawing.Point(751, 3);
+            this.txtBuscar.Multiline = true;
             this.txtBuscar.Name = "txtBuscar";
-            this.txtBuscar.Size = new System.Drawing.Size(338, 22);
-            this.txtBuscar.TabIndex = 5;
+            this.txtBuscar.Size = new System.Drawing.Size(307, 32);
+            this.txtBuscar.TabIndex = 3;
+            this.txtBuscar.TextChanged += new System.EventHandler(this.txtBuscar_TextChanged);
             // 
             // btnBuscar
             // 
-            this.btnBuscar.Location = new System.Drawing.Point(1078, 11);
+            this.btnBuscar.Font = new System.Drawing.Font("Cooper Black", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnBuscar.Location = new System.Drawing.Point(1052, 1);
             this.btnBuscar.Name = "btnBuscar";
-            this.btnBuscar.Size = new System.Drawing.Size(75, 24);
-            this.btnBuscar.TabIndex = 6;
+            this.btnBuscar.Size = new System.Drawing.Size(104, 35);
+            this.btnBuscar.TabIndex = 4;
             this.btnBuscar.Text = "Buscar";
             this.btnBuscar.UseVisualStyleBackColor = true;
             // 
@@ -165,7 +167,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Black;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.ClientSize = new System.Drawing.Size(1348, 595);
+            this.ClientSize = new System.Drawing.Size(1355, 595);
             this.Controls.Add(this.flowLayoutFavoritos);
             this.Controls.Add(this.flowLayoutPanelTienda);
             this.Controls.Add(this.flowLayoutPanelCatalogo);

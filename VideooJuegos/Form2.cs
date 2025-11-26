@@ -47,20 +47,58 @@ namespace VideooJuegos
             mensajeError.Tag = "error";
             mensajeError.Font = new Font("Georgia", 12, FontStyle.Italic);
             mensajeError.BackColor = Color.Transparent;
-            
+
             Controls.Add(mensajeError);
+        }
+
+        private void CrearLabelError(string mensaje, TextBox textbox)
+        {
+            mensajeError = new System.Windows.Forms.Label();
+            mensajeError.Text = mensaje;
+            mensajeError.Location = new Point(textbox.Location.X, textbox.Location.Y + textbox.Height);
+            mensajeError.ForeColor = Color.White;
+            mensajeError.AutoSize = true;
+            mensajeError.Tag = "error";
+            mensajeError.Font = new Font("Georgia", 12, FontStyle.Italic);
+            mensajeError.BackColor = Color.Transparent;
+
+            Controls.Add(mensajeError);
+        }
+
+        private bool EsEmailValido(string email)
+        {
+            if (string.IsNullOrWhiteSpace(email))
+                return false;
+
+            // Validación simple: debe contener @ y un punto después del @
+            int posicionArroba = email.IndexOf('@');
+
+            if (posicionArroba <= 0) // No tiene @ o está al inicio
+                return false;
+
+            int posicionPunto = email.IndexOf('.', posicionArroba);
+
+            if (posicionPunto <= posicionArroba + 1) // No tiene punto después del @ o está justo después
+                return false;
+
+            if (posicionPunto == email.Length - 1) // El punto está al final
+                return false;
+
+            return true;
         }
 
         private bool ValidateForm()
         {
             var isValid = true;
 
+            // Eliminar mensajes de error anteriores
             foreach (var control in Controls.OfType<Label>().ToArray())
             {
                 if (control.Tag != null && control.Tag.ToString() == "error")
                     Controls.Remove(control);
             }
 
+            // Validar campos vacíos
             foreach (Control control in Controls)
             {
                 if (control is TextBox)
@@ -74,6 +112,14 @@ namespace VideooJuegos
                 }
             }
 
+            // Validar formato de correo
+            if (!string.IsNullOrEmpty(txtCorreo.Text) && !EsEmailValido(txtCorreo.Text))
+            {
+                CrearLabelError("Formato de correo inválido", txtCorreo);
+                isValid = false;
+            }
+
+            // Validar que las contraseñas coincidan
             if (txtContraseña.Text != TxtCContraseña.Text)
             {
                 MessageBox.Show("Las contraseñas no coinciden.", "Error");
@@ -83,10 +129,13 @@ namespace VideooJuegos
             return isValid;
         }
 
-
-
         private void ActualizarUsuario()
         {
+            var isValid = ValidateForm();
+
+            if (!isValid)
+                return;
+
             foreach (var u in usuarios)
             {
                 if (u.Email.ToLower() == txtCorreo.Text.ToLower() && u.Email != emailOld)
@@ -137,7 +186,6 @@ namespace VideooJuegos
                 DialogResult = DialogResult.OK;
                 Close();
             }
-
         }
 
         private void btnRegistrar_Click(object sender, EventArgs e)
